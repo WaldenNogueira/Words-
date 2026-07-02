@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#101828" />
+  <title>Words</title>
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    :root{--bg:#0b1020;--card:#121a2f;--card2:#17213a;--text:#eef3ff;--muted:#9aa7c7;--line:#263250;--accent:#7cdbb7;--danger:#ff7b7b;--shadow:0 18px 40px rgba(0,0,0,.28);--r:22px}*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(circle at top,#17213a 0,#0b1020 48%,#070b16 100%);color:var(--text);min-height:100vh}.wrap{max-width:760px;margin:0 auto;padding:22px 16px 42px}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}.brand{display:flex;align-items:center;gap:12px}.logo{width:45px;height:45px;border-radius:15px;background:linear-gradient(135deg,var(--accent),#75a7ff);display:grid;place-items:center;font-weight:900;color:#08111f;box-shadow:var(--shadow)}h1{font-size:24px;margin:0}.sub{color:var(--muted);font-size:13px;margin-top:2px}.card{background:linear-gradient(180deg,var(--card),rgba(18,26,47,.88));border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px;margin-bottom:16px}label{display:block;color:var(--muted);font-size:13px;margin:12px 0 7px}input,textarea{width:100%;background:#0c1326;color:var(--text);border:1px solid #2a3658;border-radius:16px;padding:13px 14px;font-size:16px;outline:none}textarea{min-height:84px;resize:vertical}input:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,219,183,.12)}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}button,a.btn{border:0;border-radius:16px;padding:12px 14px;font-weight:750;font-size:14px;text-decoration:none;cursor:pointer;background:var(--card2);color:var(--text);border:1px solid #2a3658}button.primary{background:var(--accent);color:#07121e;border-color:transparent}button.ghost{background:transparent}button.danger{background:rgba(255,123,123,.1);border-color:rgba(255,123,123,.35);color:#ffd1d1}.hint{font-size:13px;color:var(--muted);line-height:1.45}.search{margin-bottom:12px}.list{display:grid;gap:12px}.item{background:rgba(18,26,47,.78);border:1px solid var(--line);border-radius:20px;padding:14px}.itemHead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.term{font-size:20px;font-weight:850}.translation{color:var(--accent);font-weight:750;margin-top:3px}.small{font-size:13px;color:var(--muted);line-height:1.4;margin-top:8px}.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.links a{font-size:13px;padding:9px 10px;border-radius:13px;background:#0c1326;color:var(--text);border:1px solid #2a3658;text-decoration:none}.iconBtn{padding:9px 11px;border-radius:13px}.empty{text-align:center;color:var(--muted);padding:28px 8px}.toast{position:fixed;left:16px;right:16px;bottom:18px;max-width:520px;margin:auto;background:#eef3ff;color:#07121e;border-radius:16px;padding:12px 14px;font-weight:750;box-shadow:var(--shadow);display:none}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px}.pill{font-size:12px;color:var(--muted);border:1px solid var(--line);padding:7px 10px;border-radius:999px}@media(max-width:560px){.row{grid-template-columns:1fr}.top{align-items:flex-start}.wrap{padding-top:16px}button,a.btn{width:auto}.actions button{flex:1}.links a{flex:1;text-align:center}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="brand"><div class="logo">W</div><div><h1>Words</h1><div class="sub">Seu vocabulário + YouGlish</div></div></div>
+      <span class="pill" id="count">0 termos</span>
+    </header>
+
+    <section class="card">
+      <div class="toolbar"><strong>Novo termo</strong><span class="hint">Copia → abre → cola</span></div>
+      <label>Termo em inglês</label>
+      <div class="row"><input id="term" placeholder="Ex: livelihood" autocomplete="off"><button id="pasteBtn" type="button">📋 Colar termo</button></div>
+      <label>Tradução em português</label><input id="translation" placeholder="Ex: sustento, meio de vida">
+      <label>Definição em inglês</label><textarea id="definition" placeholder="A way of earning money in order to live."></textarea>
+      <label>Exemplo em inglês</label><textarea id="example" placeholder="Teaching English became my main livelihood."></textarea>
+      <label>Observação pessoal</label><textarea id="note" placeholder="Onde vi essa palavra, contexto do filme, pronúncia, etc."></textarea>
+      <div class="actions"><button class="primary" id="saveBtn">Salvar</button><button id="autoBtn">Gerar links</button><button class="ghost" id="clearBtn">Limpar</button></div>
+      <p class="hint">A tradução/definição são editáveis. O app não usa servidor: tudo fica salvo no navegador do celular.</p>
+    </section>
+
+    <section class="card">
+      <div class="toolbar"><strong>Termos salvos</strong><button class="danger" id="exportBtn">Exportar backup</button></div>
+      <label>Buscar</label><input class="search" id="search" placeholder="Buscar por termo, tradução ou observação">
+      <div class="list" id="list"></div>
+    </section>
+  </div>
+  <div class="toast" id="toast"></div>
+<script>
+const $=id=>document.getElementById(id);const KEY='words_pwa_v1';let words=JSON.parse(localStorage.getItem(KEY)||'[]');let editing=null;
+function saveStore(){localStorage.setItem(KEY,JSON.stringify(words));render();}
+function toast(msg){$('toast').textContent=msg;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2200)}
+function clean(t){return (t||'').trim()}
+function urls(term){const q=encodeURIComponent(term);return {youglish:`https://youglish.com/pronounce/${q}/english/us`,cambridge:`https://dictionary.cambridge.org/dictionary/english/${q}`,longman:`https://www.ldoceonline.com/dictionary/${q}`}}
+function getForm(){return {id:editing||crypto.randomUUID(),term:clean($('term').value),translation:clean($('translation').value),definition:clean($('definition').value),example:clean($('example').value),note:clean($('note').value),fav:false}}
+function fill(w){editing=w.id;$('term').value=w.term;$('translation').value=w.translation||'';$('definition').value=w.definition||'';$('example').value=w.example||'';$('note').value=w.note||'';window.scrollTo({top:0,behavior:'smooth'})}
+function clearForm(){editing=null;['term','translation','definition','example','note'].forEach(id=>$(id).value='')}
+function render(){const q=clean($('search').value).toLowerCase();const list=[...words].sort((a,b)=>(b.fav-a.fav)||a.term.localeCompare(b.term)).filter(w=>[w.term,w.translation,w.definition,w.example,w.note].join(' ').toLowerCase().includes(q));$('count').textContent=`${words.length} termo${words.length===1?'':'s'}`;$('list').innerHTML=list.length?list.map(w=>{const u=urls(w.term);return `<article class="item"><div class="itemHead"><div><div class="term">${esc(w.term)}</div>${w.translation?`<div class="translation">${esc(w.translation)}</div>`:''}</div><button class="iconBtn" onclick="toggleFav('${w.id}')">${w.fav?'★':'☆'}</button></div>${w.definition?`<div class="small"><strong>Definition:</strong> ${esc(w.definition)}</div>`:''}${w.example?`<div class="small"><strong>Example:</strong> ${esc(w.example)}</div>`:''}${w.note?`<div class="small"><strong>Note:</strong> ${esc(w.note)}</div>`:''}<div class="links"><a target="_blank" href="${u.youglish}">YouGlish</a><a target="_blank" href="${u.cambridge}">Cambridge</a><a target="_blank" href="${u.longman}">Longman</a></div><div class="actions"><button onclick="editWord('${w.id}')">Editar</button><button class="danger" onclick="delWord('${w.id}')">Apagar</button></div></article>`}).join(''):'<div class="empty">Nenhum termo salvo ainda.</div>'}
+function esc(s){return (s||'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+window.editWord=id=>fill(words.find(w=>w.id===id));window.delWord=id=>{if(confirm('Apagar este termo?')){words=words.filter(w=>w.id!==id);saveStore();toast('Termo apagado')}};window.toggleFav=id=>{words=words.map(w=>w.id===id?{...w,fav:!w.fav}:w);saveStore()}
+$('saveBtn').onclick=()=>{const w=getForm();if(!w.term){toast('Digite um termo.');return}const old=words.find(x=>x.id===w.id);w.fav=old?.fav||false;words=old?words.map(x=>x.id===w.id?w:x):[w,...words];saveStore();clearForm();toast('Salvo!')}
+$('clearBtn').onclick=clearForm;$('autoBtn').onclick=()=>{const t=clean($('term').value);if(!t)return toast('Digite um termo primeiro.');window.open(urls(t).youglish,'_blank')}
+$('pasteBtn').onclick=async()=>{try{const text=await navigator.clipboard.readText();$('term').value=clean(text).split(/\s+/).slice(0,6).join(' ');toast('Termo colado')}catch(e){toast('Não consegui acessar a área de transferência. Cole manualmente.')}}
+$('search').oninput=render;$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(words,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='words-backup.json';a.click();URL.revokeObjectURL(a.href)}
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');render();
+</script>
+</body>
+</html>
