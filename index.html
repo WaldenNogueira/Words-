@@ -3,33 +3,31 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#f7f4ee" />
+  <meta name="theme-color" content="#fbfbfa" />
   <title>Words</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <style>
     :root {
-      --bg: #f7f4ee;
-      --surface: #fffdf9;
-      --surface-2: #f1eee7;
-      --ink: #191814;
-      --muted: #736d63;
-      --soft: #9d9588;
-      --line: #e4ded3;
-      --line-strong: #d6ccbd;
-      --accent: #191814;
-      --accent-soft: #efe7dc;
-      --success: #e2f7ec;
-      --success-ink: #064e3b;
-      --danger: #b42318;
-      --danger-soft: #fff0ed;
-      --warning: #c47f11;
-      --shadow: 0 16px 48px rgba(42, 35, 25, .08);
-      --shadow-soft: 0 10px 30px rgba(42, 35, 25, .05);
-      --radius-xl: 28px;
-      --radius-lg: 22px;
-      --radius-md: 16px;
-      --radius-sm: 12px;
+      --bg: #fbfbfa;
+      --surface: #ffffff;
+      --surface-soft: #f7f7f5;
+      --ink: #2f3437;
+      --ink-2: #37352f;
+      --muted: #787774;
+      --soft: #9b9a97;
+      --line: rgba(55, 53, 47, .16);
+      --line-strong: rgba(55, 53, 47, .28);
+      --hover: rgba(55, 53, 47, .06);
+      --active: rgba(55, 53, 47, .09);
+      --accent: #2f3437;
+      --danger: #c93a2f;
+      --danger-soft: #fff4f2;
+      --star: #c78214;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 8px;
+      --shadow: 0 1px 2px rgba(15, 15, 15, .04), 0 8px 24px rgba(15, 15, 15, .04);
       color-scheme: light;
     }
 
@@ -37,12 +35,11 @@
     html, body { min-height: 100%; }
     body {
       margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,.95), transparent 28rem),
-        radial-gradient(circle at 100% 0%, rgba(239,231,220,.82), transparent 25rem),
-        var(--bg);
+      background: var(--bg);
       color: var(--ink);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
@@ -52,157 +49,241 @@
     a { color: inherit; }
 
     .app {
-      width: min(1120px, 100%);
+      width: min(1040px, 100%);
       margin: 0 auto;
-      padding: max(22px, env(safe-area-inset-top)) 16px max(44px, env(safe-area-inset-bottom));
+      padding: max(22px, env(safe-area-inset-top)) 18px max(42px, env(safe-area-inset-bottom));
     }
 
-    .hero {
+    .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 14px;
-      margin: 6px 0 18px;
+      margin-bottom: 22px;
     }
+
     .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
     .logo {
-      width: 48px; height: 48px; border-radius: 18px;
-      display: grid; place-items: center;
-      background: var(--ink);
-      color: #fffaf1;
-      box-shadow: var(--shadow-soft);
-      font-weight: 900;
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      background: var(--ink-2);
+      color: #fff;
+      font-weight: 700;
       letter-spacing: -.04em;
       flex: 0 0 auto;
     }
-    h1 { margin: 0; font-size: clamp(2.15rem, 8vw, 4.1rem); line-height: .92; letter-spacing: -.075em; }
-    .subtitle { margin: 5px 0 0; color: var(--muted); font-size: .98rem; line-height: 1.35; max-width: 62ch; }
+    h1 {
+      margin: 0;
+      font-size: clamp(1.9rem, 7vw, 2.7rem);
+      line-height: 1.05;
+      letter-spacing: -.055em;
+      font-weight: 740;
+      color: var(--ink-2);
+    }
+    .subtitle {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.45;
+    }
 
-    .grid { display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(330px, .98fr); gap: 16px; align-items: start; }
-    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, .96fr) minmax(330px, 1.04fr);
+      gap: 18px;
+      align-items: start;
+    }
+    @media (max-width: 880px) { .grid { grid-template-columns: 1fr; } }
 
     .panel {
-      background: rgba(255,253,249,.84);
-      border: 1px solid rgba(228,222,211,.85);
-      border-radius: var(--radius-xl);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
       box-shadow: var(--shadow);
       overflow: hidden;
-      backdrop-filter: blur(18px);
     }
     .panel-inner { padding: 18px; }
     .section-title {
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
     }
-    .section-title h2 { margin: 0; font-size: 1.08rem; letter-spacing: -.035em; }
+    .section-title h2 {
+      margin: 0;
+      color: var(--ink-2);
+      font-size: .98rem;
+      letter-spacing: -.02em;
+      font-weight: 720;
+    }
     .pill {
-      display: inline-flex; align-items: center; gap: 6px;
-      border: 1px solid var(--line); color: var(--muted);
-      background: rgba(255,255,255,.65); border-radius: 999px;
-      padding: 7px 10px; font-size: .78rem; font-weight: 750;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: var(--surface-soft);
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: .76rem;
+      font-weight: 650;
       white-space: nowrap;
     }
 
-    label { display: block; margin: 12px 0 7px; color: #302d27; font-size: .86rem; font-weight: 800; }
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      color: var(--muted);
+      font-size: .82rem;
+      font-weight: 640;
+    }
     input, textarea {
       width: 100%;
-      border: 1px solid var(--line);
+      border: 1px solid transparent;
       border-radius: var(--radius-md);
-      color: var(--ink);
-      background: rgba(255,255,255,.72);
+      color: var(--ink-2);
+      background: var(--surface-soft);
       outline: none;
-      padding: 13px 14px;
-      transition: border .16s ease, box-shadow .16s ease, background .16s ease;
+      padding: 11px 12px;
+      transition: border .16s ease, background .16s ease, box-shadow .16s ease;
     }
-    textarea { min-height: 78px; resize: vertical; line-height: 1.45; }
-    input::placeholder, textarea::placeholder { color: #aaa297; }
-    input:focus, textarea:focus { border-color: #34312b; box-shadow: 0 0 0 4px rgba(25,24,20,.08); background: #fff; }
+    textarea { min-height: 74px; resize: vertical; line-height: 1.5; }
+    input::placeholder, textarea::placeholder { color: #aaa8a4; }
+    input:focus, textarea:focus {
+      border-color: var(--line-strong);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(55, 53, 47, .08);
+    }
 
     .term-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: end; }
     @media (max-width: 560px) { .term-row { grid-template-columns: 1fr; } }
     .split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     @media (max-width: 640px) { .split { grid-template-columns: 1fr; } }
 
-    .btn-row { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 12px; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 13px; }
     .btn {
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: #fffdf9;
-      color: var(--ink);
-      padding: 11px 14px;
-      min-height: 44px;
-      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      background: var(--surface-soft);
+      color: var(--ink-2);
+      padding: 10px 12px;
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
       text-decoration: none;
-      font-weight: 820;
-      transition: transform .12s ease, background .18s ease, border .18s ease, opacity .18s ease;
+      font-weight: 650;
+      font-size: .92rem;
+      transition: background .16s ease, border .16s ease, transform .1s ease;
       user-select: none;
     }
-    .btn:hover { transform: translateY(-1px); background: #fff; border-color: var(--line-strong); }
-    .btn:active { transform: translateY(0); }
-    .btn.primary { background: var(--ink); color: #fffaf1; border-color: var(--ink); }
-    .btn.good { background: var(--success); border-color: #bee7d0; color: var(--success-ink); }
-    .btn.danger { border-color: #ffd0c9; color: var(--danger); background: var(--danger-soft); }
-    .btn.small { min-height: 38px; padding: 8px 11px; font-size: .86rem; }
+    .btn:hover { background: var(--hover); border-color: var(--line); }
+    .btn:active { transform: translateY(1px); }
+    .btn.primary { background: var(--ink-2); color: #fff; border-color: var(--ink-2); }
+    .btn.good { background: #eef7f1; border-color: #cfe8d8; color: #1e5a38; }
+    .btn.danger { border-color: #f2cac5; color: var(--danger); background: var(--danger-soft); }
+    .btn.small { min-height: 34px; padding: 7px 10px; font-size: .82rem; }
     .btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
 
     .icon-btn {
-      width: 42px; height: 42px; min-width: 42px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: rgba(255,255,255,.78);
-      color: var(--ink);
-      display: inline-grid; place-items: center;
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--muted);
+      display: inline-grid;
+      place-items: center;
       line-height: 1;
-      font-size: 1rem;
-      transition: transform .12s ease, background .18s ease, border .18s ease;
+      font-size: .98rem;
+      transition: background .16s ease, color .16s ease, border .16s ease;
     }
-    .icon-btn:hover { transform: translateY(-1px); background: #fff; border-color: var(--line-strong); }
-    .icon-btn.active { color: var(--warning); background: #fff8e6; border-color: #f3d69a; }
-    .icon-btn.danger { color: var(--danger); background: var(--danger-soft); border-color: #ffd0c9; }
-    .icon-btn:focus-visible, .btn:focus-visible { outline: 3px solid rgba(25,24,20,.18); outline-offset: 2px; }
+    .icon-btn:hover { background: var(--hover); color: var(--ink-2); border-color: var(--line); }
+    .icon-btn.active { color: var(--star); background: #fff7e7; border-color: #efd6a4; }
+    .icon-btn.danger:hover { color: var(--danger); background: var(--danger-soft); border-color: #f2cac5; }
+    .icon-btn:focus-visible, .btn:focus-visible { outline: 3px solid rgba(55,53,47,.18); outline-offset: 2px; }
 
     .status {
-      margin-top: 12px;
+      margin-top: 14px;
       border-radius: var(--radius-md);
       border: 1px solid var(--line);
-      background: rgba(255,255,255,.58);
+      background: #fff;
       color: var(--muted);
-      padding: 11px 12px;
+      padding: 10px 11px;
       font-size: .88rem;
-      min-height: 42px;
-      line-height: 1.35;
+      min-height: 40px;
+      line-height: 1.4;
     }
-    .status strong { color: var(--ink); }
+    .status strong { color: var(--ink-2); }
 
-    .links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
-    @media (max-width: 520px) { .links { grid-template-columns: 1fr; } }
-    .links a { border-radius: 15px; padding: 11px 12px; text-align: center; background: #fffdf9; border: 1px solid var(--line); text-decoration: none; color: #34312b; font-weight: 820; }
-    .links a:hover { background: #fff; border-color: var(--line-strong); }
+    .links {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+    @media (max-width: 600px) { .links { grid-template-columns: 1fr 1fr; } }
+    .links a, .links button {
+      border-radius: var(--radius-md);
+      padding: 10px 8px;
+      min-height: 40px;
+      text-align: center;
+      background: var(--surface-soft);
+      border: 1px solid transparent;
+      text-decoration: none;
+      color: var(--ink-2);
+      font-weight: 650;
+      font-size: .86rem;
+    }
+    .links a:hover, .links button:hover { background: var(--hover); border-color: var(--line); }
 
-    .toolbar { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; margin-bottom: 12px; }
-    @media (max-width: 560px) { .toolbar { grid-template-columns: 1fr; } }
-    .filters { margin-top:0; margin-bottom:12px; }
+    .toolbar { display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px; }
+    .filters { margin-top:0; margin-bottom:14px; }
 
     .list { display: grid; gap: 10px; }
-    .empty { color: var(--muted); border: 1px dashed var(--line-strong); border-radius: 20px; padding: 22px 18px; text-align: center; background: rgba(255,255,255,.45); }
+    .empty {
+      color: var(--muted);
+      border: 1px dashed var(--line-strong);
+      border-radius: var(--radius-lg);
+      padding: 22px 18px;
+      text-align: center;
+      background: var(--surface-soft);
+    }
 
     .word-item {
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
-      background: rgba(255,255,255,.68);
-      box-shadow: 0 8px 24px rgba(42, 35, 25, .035);
-      padding: 12px;
+      background: var(--surface);
+      padding: 13px;
       display: grid;
       gap: 10px;
-      transition: transform .16s ease, border .16s ease, background .16s ease;
+      transition: background .16s ease, border .16s ease, transform .12s ease;
     }
-    .word-item:hover { transform: translateY(-1px); border-color: var(--line-strong); background: #fffdf9; }
+    .word-item:hover { background: #fff; border-color: var(--line-strong); transform: translateY(-1px); }
     .word-top { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: start; }
     .word-main { min-width: 0; }
-    .word-term { font-size: 1.08rem; font-weight: 930; letter-spacing: -.035em; overflow-wrap: anywhere; }
-    .word-definition { color: var(--muted); font-size: .88rem; line-height: 1.42; margin-top: 4px; }
-    .word-actions { display: flex; gap: 6px; align-items: center; flex-wrap: nowrap; }
-    @media (max-width: 460px) {
+    .word-term {
+      color: var(--ink-2);
+      font-size: 1.02rem;
+      font-weight: 730;
+      letter-spacing: -.025em;
+      overflow-wrap: anywhere;
+    }
+    .word-definition {
+      color: var(--muted);
+      font-size: .88rem;
+      line-height: 1.45;
+      margin-top: 5px;
+      overflow-wrap: anywhere;
+    }
+    .word-actions { display: flex; gap: 2px; align-items: center; flex-wrap: nowrap; }
+    @media (max-width: 500px) {
       .word-top { grid-template-columns: 1fr; }
       .word-actions { justify-content: flex-start; }
     }
@@ -210,8 +291,8 @@
     .dropdowns { display: grid; gap: 7px; }
     .word-details {
       border: 1px solid var(--line);
-      border-radius: 15px;
-      background: rgba(247,244,238,.72);
+      border-radius: var(--radius-md);
+      background: var(--surface-soft);
       overflow: hidden;
     }
     .word-details summary {
@@ -220,20 +301,21 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      min-height: 42px;
-      padding: 10px 12px;
-      font-weight: 850;
-      color: #353029;
+      min-height: 38px;
+      padding: 8px 10px;
+      font-weight: 650;
+      color: var(--ink-2);
       cursor: pointer;
       user-select: none;
     }
     .word-details summary::-webkit-details-marker { display: none; }
     .word-details summary::after {
       content: "⌄";
-      width: 24px; height: 24px;
-      display: inline-grid; place-items: center;
-      border-radius: 999px;
-      background: rgba(255,255,255,.8);
+      width: 22px;
+      height: 22px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 6px;
       color: var(--muted);
       transition: transform .16s ease;
       flex: 0 0 auto;
@@ -241,48 +323,70 @@
     .word-details[open] summary::after { transform: rotate(180deg); }
     .details-body {
       border-top: 1px solid var(--line);
-      padding: 11px 12px 12px;
-      color: #454039;
-      line-height: 1.46;
-      font-size: .92rem;
+      padding: 10px;
+      color: var(--ink-2);
+      line-height: 1.5;
+      font-size: .9rem;
       overflow-wrap: anywhere;
+      background: #fff;
     }
 
     .word-links { display: flex; flex-wrap: wrap; gap: 7px; }
     .word-link {
-      display: inline-flex; align-items: center; justify-content: center; gap: 5px;
-      min-height: 34px;
-      padding: 7px 10px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: rgba(255,255,255,.7);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      min-height: 31px;
+      padding: 6px 9px;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      background: var(--surface-soft);
       text-decoration: none;
-      font-size: .82rem;
-      font-weight: 820;
-      color: #4b463e;
+      font-size: .8rem;
+      font-weight: 650;
+      color: var(--muted);
     }
-    .word-link:hover { background: #fff; border-color: var(--line-strong); }
-    .notes { color: var(--muted); font-size: .86rem; line-height: 1.42; border-left: 3px solid var(--line-strong); padding-left: 9px; }
+    .word-link:hover { background: var(--hover); border-color: var(--line); color: var(--ink-2); }
+    .word-link.gpt { color: #5f3dc4; background: #f6f2ff; }
+    .notes {
+      color: var(--muted);
+      font-size: .86rem;
+      line-height: 1.45;
+      border-left: 2px solid var(--line-strong);
+      padding-left: 9px;
+    }
 
     .settings {
-      display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center;
-      color: var(--muted); font-size: .86rem; margin-top: 12px;
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+      font-size: .84rem;
+      margin-top: 13px;
     }
-    .settings label { display:flex; align-items:center; gap:7px; margin:0; color: var(--muted); font-weight: 720; }
-    .settings input { width: auto; accent-color: var(--ink); }
-    .file-input { display: none; }
-    .footer { color: var(--muted); font-size: .78rem; line-height: 1.45; margin-top: 14px; }
-    .spinner { width: 16px; height: 16px; border: 2px solid rgba(25,24,20,.22); border-top-color: var(--ink); border-radius: 50%; animation: spin .8s linear infinite; display: inline-block; vertical-align: -3px; }
+    .settings label { display:flex; align-items:center; gap:7px; margin:0; color: var(--muted); font-weight: 560; }
+    .settings input { width: auto; accent-color: var(--ink-2); }
+    .footer { color: var(--soft); font-size: .76rem; line-height: 1.45; margin-top: 13px; }
+    .spinner { width: 15px; height: 15px; border: 2px solid rgba(55,53,47,.18); border-top-color: var(--ink-2); border-radius: 50%; animation: spin .8s linear infinite; display: inline-block; vertical-align: -3px; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     .toast {
-      position: fixed; left: 50%; bottom: max(18px, env(safe-area-inset-bottom)); transform: translateX(-50%) translateY(20px);
-      opacity: 0; pointer-events: none;
-      background: var(--ink); color: #fffaf1;
-      border-radius: 999px; padding: 11px 14px; font-weight: 850;
-      box-shadow: 0 16px 60px rgba(0,0,0,.25);
+      position: fixed;
+      left: 50%;
+      bottom: max(18px, env(safe-area-inset-bottom));
+      transform: translateX(-50%) translateY(18px);
+      opacity: 0;
+      pointer-events: none;
+      background: var(--ink-2);
+      color: #fff;
+      border-radius: 999px;
+      padding: 10px 13px;
+      font-weight: 650;
+      box-shadow: 0 14px 50px rgba(0,0,0,.22);
       transition: opacity .2s, transform .2s;
-      z-index: 50; width: max-content; max-width: calc(100% - 32px);
+      z-index: 50;
+      width: max-content;
+      max-width: calc(100% - 32px);
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .hidden { display: none !important; }
@@ -290,12 +394,12 @@
 </head>
 <body>
   <main class="app">
-    <section class="hero">
+    <section class="topbar">
       <div class="brand">
         <div class="logo">W</div>
         <div>
           <h1>Words</h1>
-          <p class="subtitle">Cole um termo em inglês, gere tradução, definição, exemplo, áudio e salve.</p>
+          <p class="subtitle">Um caderno simples para capturar termos, gerar contexto e revisar.</p>
         </div>
       </div>
       <button id="installBtn" class="btn small hidden">📱 Instalar</button>
@@ -320,8 +424,9 @@
           <div class="btn-row">
             <button id="generateBtn" class="btn primary">✨ Gerar</button>
             <button id="speakBtn" class="btn">🔊 Áudio</button>
+            <button id="gptBtn" class="btn">🤖 GPT</button>
             <button id="saveBtn" class="btn good">💾 Salvar</button>
-            <button id="clearBtn" class="btn">🧹 Limpar</button>
+            <button id="clearBtn" class="btn">Limpar</button>
           </div>
 
           <div id="status" class="status">Pronto. Cole uma palavra e toque em <strong>Gerar</strong>.</div>
@@ -330,6 +435,7 @@
             <a id="youglishLink" href="#" target="_blank" rel="noopener">YouGlish</a>
             <a id="cambridgeLink" href="#" target="_blank" rel="noopener">Cambridge</a>
             <a id="longmanLink" href="#" target="_blank" rel="noopener">Longman</a>
+            <button id="gptLinkBtn" type="button">GPT query</button>
           </div>
 
           <div class="split">
@@ -354,7 +460,7 @@
             <label><input id="autoSpeak" type="checkbox" /> falar áudio depois de gerar</label>
           </div>
 
-          <p class="footer">Tradução usa uma API gratuita sem chave; definição/exemplo usam um dicionário gratuito. Expressões e phrasal verbs podem precisar de ajuste manual.</p>
+          <p class="footer">Quando a API não encontrar definição ou exemplo, use o botão GPT: ele cria uma pergunta pronta, copia e tenta abrir/compartilhar com o ChatGPT.</p>
         </div>
       </div>
 
@@ -367,9 +473,6 @@
 
           <div class="toolbar">
             <input id="search" placeholder="Buscar salvos..." />
-            <button id="exportBtn" class="btn small">⬇️ Backup</button>
-            <button id="importBtn" class="btn small">⬆️ Importar</button>
-            <input id="importFile" class="file-input" type="file" accept="application/json,.json" />
           </div>
           <div class="btn-row filters">
             <button id="showAllBtn" class="btn small">Todos</button>
@@ -396,10 +499,10 @@
 
     const els = {
       term: $('term'), translation: $('translation'), definition: $('definition'), example: $('example'), notes: $('notes'),
-      pasteBtn: $('pasteBtn'), generateBtn: $('generateBtn'), speakBtn: $('speakBtn'), saveBtn: $('saveBtn'), clearBtn: $('clearBtn'),
+      pasteBtn: $('pasteBtn'), generateBtn: $('generateBtn'), speakBtn: $('speakBtn'), gptBtn: $('gptBtn'), gptLinkBtn: $('gptLinkBtn'), saveBtn: $('saveBtn'), clearBtn: $('clearBtn'),
       status: $('status'), youglishLink: $('youglishLink'), cambridgeLink: $('cambridgeLink'), longmanLink: $('longmanLink'),
       search: $('search'), list: $('list'), countPill: $('countPill'), favPill: $('favPill'),
-      exportBtn: $('exportBtn'), importBtn: $('importBtn'), importFile: $('importFile'), showAllBtn: $('showAllBtn'), showFavBtn: $('showFavBtn'), deleteAllBtn: $('deleteAllBtn'),
+      showAllBtn: $('showAllBtn'), showFavBtn: $('showFavBtn'), deleteAllBtn: $('deleteAllBtn'),
       autoGenerate: $('autoGenerate'), autoSpeak: $('autoSpeak'), installBtn: $('installBtn'), toast: $('toast')
     };
 
@@ -513,6 +616,11 @@
       return `I heard “${term}” and wanted to understand how native speakers use it.`;
     }
 
+    function isMissingField(value) {
+      const v = (value || '').toLowerCase().trim();
+      return !v || v.includes('not found') || v.includes('não encontrada') || v.includes('não encontrado') || v.includes('edit this field');
+    }
+
     async function generate() {
       const term = els.term.value.trim();
       if (!term) return toast('Digite ou cole um termo primeiro.');
@@ -534,11 +642,11 @@
       if (dict?.audio) audioUrl = dict.audio;
 
       if (!els.example.value.trim()) els.example.value = fallbackExample(term);
-      if (!els.definition.value.trim()) els.definition.value = 'Definition not found automatically. Use Cambridge/Longman and edit this field.';
+      if (!els.definition.value.trim()) els.definition.value = 'Definition not found automatically. Use GPT, Cambridge or Longman and edit this field.';
       if (!els.translation.value.trim()) els.translation.value = 'Tradução não encontrada automaticamente. Edite este campo.';
 
       els.generateBtn.disabled = false;
-      if (warnings.length) setStatus('Campos preenchidos com fallback. Pode revisar manualmente, principalmente expressões e phrasal verbs.', 'warn');
+      if (warnings.length || isMissingField(els.definition.value)) setStatus('Alguns campos foram preenchidos com fallback. Use <strong>GPT</strong> para pedir definição, exemplos e uso real.', 'warn');
       else setStatus('Campos preenchidos. Revise e toque em <strong>Salvar</strong>.', 'ok');
       if (els.autoSpeak.checked) speakTerm();
     }
@@ -566,6 +674,39 @@
       const voice = voices.find(v => /en[-_]US/i.test(v.lang)) || voices.find(v => /^en/i.test(v.lang));
       if (voice) utterance.voice = voice;
       window.speechSynthesis.speak(utterance);
+    }
+
+    function buildGptPrompt(term, item = {}) {
+      const safeTerm = (term || '').trim();
+      const currentTranslation = item.translation || els.translation.value.trim();
+      const currentDefinition = item.definition || els.definition.value.trim();
+      const currentExample = item.example || els.example.value.trim();
+      return `Crie uma ficha curta de vocabulário para o termo/expressão em inglês: "${safeTerm}".\n\nResponda em português, mas mantenha definição e exemplos em inglês quando fizer sentido. Quero:\n1) Tradução natural em português do Brasil.\n2) Definição simples em inglês.\n3) 3 exemplos naturais em inglês, com contexto real.\n4) Observações de uso: formal/informal, phrasal verb, expressão idiomática, falso cognato ou pronúncia, se relevante.\n5) Uma frase curta que eu possa salvar no meu app.\n\nCampos atuais, caso ajudem:\nTradução: ${currentTranslation || 'vazio'}\nDefinição: ${currentDefinition || 'vazio'}\nExemplo: ${currentExample || 'vazio'}\n\nSe o termo não for comum, diga claramente e sugira a forma mais natural.`;
+    }
+
+    async function shareWithGPT(term, item = {}) {
+      const cleanTerm = (term || '').trim();
+      if (!cleanTerm) return toast('Digite ou selecione um termo primeiro.');
+      const prompt = buildGptPrompt(cleanTerm, item);
+      const url = `https://chatgpt.com/?q=${encodeURIComponent(prompt)}`;
+
+      try {
+        await navigator.clipboard.writeText(prompt);
+      } catch {}
+
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: `Words: ${cleanTerm}`, text: prompt, url: 'https://chatgpt.com/' });
+          toast('Query enviada para compartilhar.');
+          return;
+        } catch (err) {
+          // usuário pode cancelar o compartilhamento; seguimos para fallback
+        }
+      }
+
+      try { window.open(url, '_blank', 'noopener'); }
+      catch { window.location.href = url; }
+      toast('Query copiada e ChatGPT aberto.');
     }
 
     function getFormData() {
@@ -663,6 +804,7 @@
         const translation = item.translation || 'Sem tradução salva.';
         const example = item.example || 'Sem exemplo salvo.';
         const favLabel = item.favorite ? 'Remover dos favoritos' : 'Favoritar';
+        const needsGpt = isMissingField(item.definition) || isMissingField(item.example) || isMissingField(item.translation);
         return `
           <article class="word-item">
             <div class="word-top">
@@ -673,6 +815,7 @@
               <div class="word-actions" aria-label="Ações do termo">
                 <button class="icon-btn ${item.favorite ? 'active' : ''}" data-action="favorite" data-id="${escapeAttr(item.id)}" title="${favLabel}" aria-label="${favLabel}">${item.favorite ? '★' : '☆'}</button>
                 <button class="icon-btn" data-action="speak" data-id="${escapeAttr(item.id)}" title="Ouvir" aria-label="Ouvir">🔊</button>
+                <button class="icon-btn" data-action="gpt" data-id="${escapeAttr(item.id)}" title="Enviar query ao GPT" aria-label="Enviar query ao GPT">🤖</button>
                 <button class="icon-btn" data-action="edit" data-id="${escapeAttr(item.id)}" title="Editar" aria-label="Editar">✏️</button>
                 <button class="icon-btn danger" data-action="delete" data-id="${escapeAttr(item.id)}" title="Apagar" aria-label="Apagar">🗑️</button>
               </div>
@@ -680,11 +823,11 @@
 
             <div class="dropdowns">
               <details class="word-details">
-                <summary>🇧🇷 Tradução</summary>
+                <summary>Tradução</summary>
                 <div class="details-body">${escapeHtml(translation)}</div>
               </details>
               <details class="word-details">
-                <summary>💬 Exemplo</summary>
+                <summary>Exemplo</summary>
                 <div class="details-body">${escapeHtml(example)}</div>
               </details>
             </div>
@@ -695,6 +838,7 @@
               <a class="word-link" href="${escapeAttr(itemLink(item, 'youglish'))}" target="_blank" rel="noopener">YouGlish</a>
               <a class="word-link" href="${escapeAttr(itemLink(item, 'cambridge'))}" target="_blank" rel="noopener">Cambridge</a>
               <a class="word-link" href="${escapeAttr(itemLink(item, 'longman'))}" target="_blank" rel="noopener">Longman</a>
+              ${needsGpt ? `<button class="word-link gpt" data-action="gpt" data-id="${escapeAttr(item.id)}">Pedir ao GPT</button>` : ''}
             </div>
           </article>
         `;
@@ -706,43 +850,6 @@
     }
     function escapeAttr(str) {
       return escapeHtml(str).replace(/'/g, '&#39;');
-    }
-
-    function exportBackup() {
-      const blob = new Blob([JSON.stringify({ app: 'Words', version: 4, exportedAt: new Date().toISOString(), items }, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `words-backup-${new Date().toISOString().slice(0,10)}.json`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-      toast('Backup exportado.');
-    }
-
-    function importBackupFile(file) {
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        try {
-          const data = JSON.parse(reader.result);
-          const incoming = Array.isArray(data) ? data : data.items;
-          if (!Array.isArray(incoming)) throw new Error('invalid');
-          const byTerm = new Map(items.map(i => [i.term.toLowerCase(), i]));
-          for (const item of incoming) {
-            if (!item.term) continue;
-            const clean = { ...item, id: item.id || crypto.randomUUID(), updatedAt: item.updatedAt || new Date().toISOString() };
-            byTerm.set(clean.term.toLowerCase(), clean);
-          }
-          items = Array.from(byTerm.values());
-          persist();
-          toast('Backup importado.');
-        } catch {
-          toast('Arquivo de backup inválido.');
-        }
-      };
-      reader.readAsText(file);
     }
 
     function readShareParams() {
@@ -762,6 +869,8 @@
       els.pasteBtn.addEventListener('click', pasteTerm);
       els.generateBtn.addEventListener('click', generate);
       els.speakBtn.addEventListener('click', () => speakTerm());
+      els.gptBtn.addEventListener('click', () => shareWithGPT(els.term.value));
+      els.gptLinkBtn.addEventListener('click', () => shareWithGPT(els.term.value));
       els.saveBtn.addEventListener('click', saveItem);
       els.clearBtn.addEventListener('click', resetForm);
       els.term.addEventListener('input', () => setLinks(els.term.value));
@@ -773,14 +882,11 @@
         if (e.key === 'Enter') { e.preventDefault(); if (els.autoGenerate.checked) generate(); }
       });
       els.search.addEventListener('input', render);
-      els.exportBtn.addEventListener('click', exportBackup);
-      els.importBtn.addEventListener('click', () => els.importFile.click());
-      els.importFile.addEventListener('change', e => importBackupFile(e.target.files[0]));
       els.showAllBtn.addEventListener('click', () => { showOnlyFavs = false; render(); });
       els.showFavBtn.addEventListener('click', () => { showOnlyFavs = true; render(); });
       els.deleteAllBtn.addEventListener('click', () => {
         if (!items.length) return toast('Nada para apagar.');
-        if (!confirm('Apagar todos os termos salvos? Faça backup antes, se precisar.')) return;
+        if (!confirm('Apagar todos os termos salvos?')) return;
         items = [];
         persist();
         resetForm();
@@ -789,13 +895,12 @@
         const target = e.target.closest('[data-action]');
         if (!target) return;
         const { action, id } = target.dataset;
+        const item = items.find(i => i.id === id);
         if (action === 'favorite') toggleFavorite(id);
         if (action === 'edit') editItem(id);
         if (action === 'delete') deleteItem(id);
-        if (action === 'speak') {
-          const item = items.find(i => i.id === id);
-          if (item) { audioUrl = item.audioUrl || ''; speakTerm(item.term); }
-        }
+        if (action === 'gpt' && item) shareWithGPT(item.term, item);
+        if (action === 'speak' && item) { audioUrl = item.audioUrl || ''; speakTerm(item.term); }
       });
       window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();

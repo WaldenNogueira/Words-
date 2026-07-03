@@ -1,16 +1,17 @@
-# Words PWA v4
+# Words PWA v5
 
-App simples para salvar vocabulário em inglês.
+Versão com visual mais próximo do Notion: menos sombra, cards mais limpos, espaçamento corrigido e tipografia mais leve.
 
-## Atualizações da v4
+## Atualizações da v5
 
-- Cards salvos com ícones de favorito, áudio, editar e apagar no topo.
-- Dropdown para tradução.
-- Dropdown para exemplo.
-- Design mais minimalista, com menos ruído visual e ações mais compactas.
-- Mantém os dados salvos da v3 porque usa a mesma chave de armazenamento local.
+- Visual mais minimalista, com estilo de bloco/card inspirado em Notion.
+- Tipografia e espaçamentos revisados.
+- Removidos os botões de exportar e importar.
+- Novo botão GPT no formulário.
+- Novo botão GPT nos cards salvos para criar uma query pronta quando faltar tradução, definição ou exemplo.
+- Mantém os dados salvos da v3/v4 porque usa a mesma chave de armazenamento local.
 
-## Como publicar no GitHub Pages
+## Como atualizar no GitHub Pages
 
 1. Extraia este ZIP.
 2. Envie para o repositório estes arquivos na raiz:
@@ -20,9 +21,11 @@ App simples para salvar vocabulário em inglês.
    - `icon-192.png`
    - `icon-512.png`
 3. Faça commit.
-4. Em Settings > Pages, use `main` e `/(root)`.
-5. Abra o app com `?v=4` no final da URL para forçar atualização.
+4. Abra o app com `?v=5` no final da URL para forçar atualização.
+
+Exemplo:
+`https://waldennogueira.github.io/Words-/?v=5`
 
 ## Observação
 
-A tradução usa MyMemory API e o dicionário usa Free Dictionary API. Eles são gratuitos e sem chave, mas podem ter limite ou falhar com algumas expressões. O app sempre deixa os campos editáveis.
+O botão GPT copia uma query pronta e tenta abrir/compartilhar com o ChatGPT. Em alguns celulares, ele abre a folha de compartilhamento do Android; em outros, ele abre o ChatGPT no navegador.

@@ -1,12 +1,12 @@
 {
   "name": "Words",
   "short_name": "Words",
-  "description": "App minimalista para salvar vocabulário em inglês com tradução, definição, exemplo, áudio e links úteis.",
+  "description": "App minimalista para salvar vocabulário em inglês com tradução, definição, exemplo, áudio e integração rápida com GPT.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f7f4ee",
-  "theme_color": "#f7f4ee",
+  "background_color": "#fbfbfa",
+  "theme_color": "#fbfbfa",
   "orientation": "portrait-primary",
   "lang": "pt-BR",
   "icons": [
