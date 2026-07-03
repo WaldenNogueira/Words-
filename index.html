@@ -23,7 +23,8 @@
       --accent: #2f2f2f;
       --danger: #b3261e;
       --radius: 14px;
-      --shadow: 0 1px 2px rgba(15, 15, 15, .04);
+      --shadow: 0 1px 2px rgba(15, 15, 15, .035);
+      --shadow-hover: 0 2px 8px rgba(15, 15, 15, .055);
       --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
@@ -80,7 +81,7 @@
       border: 1px solid var(--line);
       border-radius: 18px;
       background: var(--paper);
-      padding: 16px;
+      padding: 14px;
       box-shadow: var(--shadow);
       margin-bottom: 18px;
     }
@@ -104,6 +105,23 @@
       color: var(--muted);
       font-size: 12.5px;
       margin: 0;
+    }
+
+    .manual-term {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--soft);
+      color: var(--text);
+      padding: 0 13px;
+      outline: none;
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+    .manual-term:focus {
+      background: var(--paper);
+      border-color: var(--line-strong);
     }
 
     .actions {
@@ -135,6 +153,8 @@
     }
     .btn:hover { background: var(--soft); }
     .btn.primary:hover { background: #111; }
+    .btn svg { width: 18px; height: 18px; flex: 0 0 auto; }
+    .btn.primary svg { stroke: currentColor; }
 
     .status {
       margin-top: 12px;
@@ -208,7 +228,7 @@
       box-shadow: var(--shadow);
       transition: background .16s ease, border-color .16s ease;
     }
-    .card:hover { border-color: var(--line-strong); }
+    .card:hover { border-color: var(--line-strong); box-shadow: var(--shadow-hover); }
 
     .card-term-line {
       display: flex;
@@ -236,15 +256,16 @@
     .action-line {
       margin-top: 7px;
       display: flex;
-      gap: 5px;
+      gap: 6px;
       align-items: center;
       justify-content: flex-start;
       flex-wrap: wrap;
     }
 
     .site-btn {
-      width: 32px;
+      min-width: 34px;
       height: 32px;
+      padding: 0 8px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -255,17 +276,16 @@
       cursor: pointer;
       text-decoration: none;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 750;
       line-height: 1;
     }
     .site-btn:hover { background: var(--soft-2); color: var(--text); }
-    .site-btn img {
-      width: 17px;
-      height: 17px;
-      border-radius: 4px;
-      display: block;
-    }
-    .site-btn span { display: none; }
+    .site-btn svg { width: 18px; height: 18px; display: block; }
+    .site-btn .wordmark { letter-spacing: -0.03em; display: inline-flex; align-items: center; }
+    .wordmark .you { color: #111; }
+    .wordmark .glish { margin-left: 1px; color: #fff; background: #d7262d; border-radius: 3px; padding: 3px 4px 3px 3px; }
+    .brand-gpt { display: inline-flex; align-items: center; gap: 6px; }
+    .brand-gpt svg { width: 18px; height: 18px; }
 
     .ipa {
       color: var(--muted);
@@ -293,6 +313,7 @@
       line-height: 1;
     }
     .icon-btn:hover { background: var(--soft-2); color: var(--text); }
+    .icon-btn svg { width: 19px; height: 19px; stroke: currentColor; }
     .icon-btn.active { color: var(--text); }
     .icon-btn.danger:hover { color: var(--danger); background: #fdf0ee; }
 
@@ -458,9 +479,10 @@
       <div class="composer-head">
         <h2 id="new-entry-title" class="composer-title">New entry</h2>
       </div>
+      <input id="manualTerm" class="manual-term" type="text" placeholder="Type a term or expression" autocomplete="off" inputmode="text" />
       <div class="actions">
-        <button id="askGptBtn" class="btn primary">🤖 Ask GPT</button>
-        <button id="pasteResponseBtn" class="btn">📋 Paste response</button>
+        <button id="askGptBtn" class="btn primary"><span class="brand-gpt" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M8.2 4.6c1.5-2.2 4.8-1.7 5.7.8 2.6-.2 4.5 2.5 3.3 4.8 2.1 1.6 1.4 4.9-1.1 5.7-.3 2.7-3.4 3.8-5.4 2.1-2.3 1.3-5.1-.7-4.8-3.3-2.5-1-2.8-4.3-.5-5.8-.8-2.5 1.1-4.8 3.8-4.3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 8.2 12 6.1l3.5 2.1v4.1L12 14.4l-3.5-2.1V8.2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>GPT</button>
+        <button id="pasteResponseBtn" class="btn"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 4h6l1 2h2a1.5 1.5 0 0 1 1.5 1.5v11A1.5 1.5 0 0 1 18 20H6a1.5 1.5 0 0 1-1.5-1.5v-11A1.5 1.5 0 0 1 6 6h2l1-2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 6h6M8 11h8M8 15h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Paste response</button>
       </div>
       <div id="status" class="status"></div>
     </section>
@@ -528,6 +550,7 @@ Tradução do exemplo."></textarea></label>
     let deferredInstallPrompt = null;
 
     const els = {
+      manualTerm: $('manualTerm'),
       askGptBtn: $('askGptBtn'),
       pasteResponseBtn: $('pasteResponseBtn'),
       status: $('status'),
@@ -613,17 +636,54 @@ Tradução do exemplo."></textarea></label>
     }
 
     function buildGptPrompt(term) {
-      return `Create one English vocabulary card for a Brazilian Portuguese speaker.\n\nTERM:\n${term}\n\nRequirements:\n- Use natural American English.\n- If the term is an expression, explain the expression as a whole.\n- IPA must be American English pronunciation.\n- Translation must be in Brazilian Portuguese.\n- Definition must be simple, natural English.\n- Example must sound like something an American would actually say.\n- Put the Brazilian Portuguese translation of the example directly below the English example, inside the EXAMPLE field.\n- Note must be in Brazilian Portuguese and include practical usage tips, common situations, nuance, and any important warning such as formal/informal use, phrasal verb, idiom, false cognate, or pronunciation if relevant.\n\nReturn ONLY this exact format. Do not add markdown, bullets, or extra explanation.\n\nTERM:\n${term}\n\nIPA:\n/.../\n\nTRANSLATION:\n...\n\nDEFINITION:\n...\n\nEXAMPLE:\nEnglish example sentence.\nTradução natural em português do exemplo.\n\nNOTE:\nNota em português com dicas de uso.`;
+      return `Create one English vocabulary card for a Brazilian Portuguese speaker.
+
+TERM:
+${term}
+
+Requirements:
+- Use natural American English.
+- If the term is an expression, explain the expression as a whole, not word by word.
+- IPA must be American English pronunciation.
+- Translation must be in natural Brazilian Portuguese.
+- Definition must be simple, natural English.
+- Example must sound like something an American would actually say in real life.
+- Put the Brazilian Portuguese translation of the example directly below the English example, inside the EXAMPLE field.
+- Note must be in Brazilian Portuguese and should be a little more detailed than usual. Include practical usage tips, common situations, nuance, register (formal/informal), whether it is a phrasal verb, idiom, collocation, or false cognate when relevant, common mistakes Brazilian learners make, pronunciation warnings, and differences from similar words or expressions when useful.
+- Keep the note useful for a Brazilian learner who wants to understand how native speakers actually use the term.
+
+Return ONLY this exact format. Do not add markdown, bullets, or extra explanation.
+
+TERM:
+${term}
+
+IPA:
+/.../
+
+TRANSLATION:
+...
+
+DEFINITION:
+...
+
+EXAMPLE:
+English example sentence.
+Tradução natural em português do exemplo.
+
+NOTE:
+Nota em português com dicas práticas, explicações adicionais e alertas de uso.`;
     }
 
     async function askGptFromClipboard() {
-      let term = '';
-      try {
-        term = cleanTerm(await readClipboardText());
-      } catch {
-        term = cleanTerm(prompt('Paste or type the English term:') || '');
+      let term = cleanTerm(els.manualTerm.value);
+      if (!term) {
+        try {
+          term = cleanTerm(await readClipboardText());
+        } catch {
+          term = cleanTerm(prompt('Paste or type the English term:') || '');
+        }
       }
-      if (!term) return toast('No term found in the clipboard.');
+      if (!term) return toast('Type a term or copy one first.');
 
       const promptText = buildGptPrompt(term);
       try { await writeClipboardText(promptText); } catch {}
@@ -860,12 +920,12 @@ Tradução do exemplo."></textarea></label>
               </button>
             </div>
             <div class="action-line" aria-label="Card actions">
-              <a class="site-btn" href="${escapeAttr(links.youglish)}" target="_blank" rel="noopener" title="YouGlish" aria-label="Open in YouGlish"><img src="https://youglish.com/favicon.ico" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='inline';"><span>YG</span></a>
-              <a class="site-btn" href="${escapeAttr(links.reverso)}" target="_blank" rel="noopener" title="Reverso Context" aria-label="Open in Reverso Context"><img src="https://www.reverso.net/favicon.ico" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='inline';"><span>RC</span></a>
-              <button class="icon-btn ${item.favorite ? 'active' : ''}" data-action="favorite" data-id="${escapeAttr(item.id)}" title="Favorite" aria-label="Favorite">${item.favorite ? '★' : '☆'}</button>
-              <button class="icon-btn" data-action="speak" data-id="${escapeAttr(item.id)}" title="Audio" aria-label="Audio">🔊</button>
-              <button class="icon-btn" data-action="edit" data-id="${escapeAttr(item.id)}" title="Edit" aria-label="Edit">✎</button>
-              <button class="icon-btn danger" data-action="delete" data-id="${escapeAttr(item.id)}" title="Delete" aria-label="Delete">×</button>
+              <a class="site-btn" href="${escapeAttr(links.youglish)}" target="_blank" rel="noopener" title="YouGlish" aria-label="Open in YouGlish"><span class="wordmark"><span class="you">You</span><span class="glish">Glish</span></span></a>
+              <a class="site-btn" href="${escapeAttr(links.reverso)}" target="_blank" rel="noopener" title="Reverso Context" aria-label="Open in Reverso Context"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7.5 8.5A5.7 5.7 0 0 1 17 6.8l1.5 1.5" stroke="#1f6fb2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 4.8v3.5H15" stroke="#1f6fb2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.5 15.5A5.7 5.7 0 0 1 7 17.2l-1.5-1.5" stroke="#d4242c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 19.2v-3.5H9" stroke="#d4242c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <button class="icon-btn ${item.favorite ? 'active' : ''}" data-action="favorite" data-id="${escapeAttr(item.id)}" title="Favorite" aria-label="Favorite"><svg viewBox="0 0 24 24" fill="${item.favorite ? 'currentColor' : 'none'}" aria-hidden="true"><path d="m12 3.8 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8L12 3.8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+              <button class="icon-btn" data-action="speak" data-id="${escapeAttr(item.id)}" title="Audio" aria-label="Audio"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 9.5v5h3.2L13 18V6L8.2 9.5H5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 9c.8.8 1.2 1.8 1.2 3s-.4 2.2-1.2 3M18.7 6.8A7.2 7.2 0 0 1 21 12a7.2 7.2 0 0 1-2.3 5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+              <button class="icon-btn" data-action="edit" data-id="${escapeAttr(item.id)}" title="Edit" aria-label="Edit"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 19.5h4.1L19 9.1a2.1 2.1 0 0 0 0-3l-1.1-1.1a2.1 2.1 0 0 0-3 0L4.5 15.4v4.1Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M13.8 6.2l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+              <button class="icon-btn danger" data-action="delete" data-id="${escapeAttr(item.id)}" title="Delete" aria-label="Delete"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 7h14M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m2 0-.6 12a1.5 1.5 0 0 1-1.5 1.4H9.1A1.5 1.5 0 0 1 7.6 19L7 7m3.2 3.5v6m3.6-6v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
             ${expandedContent}
           </article>
@@ -881,6 +941,7 @@ Tradução do exemplo."></textarea></label>
     function bindEvents() {
       els.askGptBtn.addEventListener('click', askGptFromClipboard);
       els.pasteResponseBtn.addEventListener('click', pasteGptResponse);
+      els.manualTerm.addEventListener('keydown', (e) => { if (e.key === 'Enter') askGptFromClipboard(); });
       els.search.addEventListener('input', render);
       els.list.addEventListener('click', (event) => {
         const btn = event.target.closest('[data-action]');

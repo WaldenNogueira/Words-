@@ -1,4 +1,4 @@
-const CACHE_NAME = 'words-pwa-v8.0.0';
+const CACHE_NAME = 'words-pwa-v9.0.0';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (event) => {
