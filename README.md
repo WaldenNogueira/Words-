@@ -1,31 +1,30 @@
-# Words PWA v5
+# Words PWA v6
 
-Versão com visual mais próximo do Notion: menos sombra, cards mais limpos, espaçamento corrigido e tipografia mais leve.
+A minimal vocabulary notebook for English learners.
 
-## Atualizações da v5
+## Flow
+1. Copy an English word or expression.
+2. Open the app and tap **Ask GPT**.
+3. Paste the generated prompt in ChatGPT if needed.
+4. Copy ChatGPT's answer.
+5. Return to the app and tap **Paste response**.
 
-- Visual mais minimalista, com estilo de bloco/card inspirado em Notion.
-- Tipografia e espaçamentos revisados.
-- Removidos os botões de exportar e importar.
-- Novo botão GPT no formulário.
-- Novo botão GPT nos cards salvos para criar uma query pronta quando faltar tradução, definição ou exemplo.
-- Mantém os dados salvos da v3/v4 porque usa a mesma chave de armazenamento local.
+The app expects this format:
 
-## Como atualizar no GitHub Pages
+TERM:
+...
 
-1. Extraia este ZIP.
-2. Envie para o repositório estes arquivos na raiz:
-   - `index.html`
-   - `manifest.json`
-   - `sw.js`
-   - `icon-192.png`
-   - `icon-512.png`
-3. Faça commit.
-4. Abra o app com `?v=5` no final da URL para forçar atualização.
+IPA:
+...
 
-Exemplo:
-`https://waldennogueira.github.io/Words-/?v=5`
+TRANSLATION:
+...
 
-## Observação
+DEFINITION:
+...
 
-O botão GPT copia uma query pronta e tenta abrir/compartilhar com o ChatGPT. Em alguns celulares, ele abre a folha de compartilhamento do Android; em outros, ele abre o ChatGPT no navegador.
+EXAMPLE:
+...
+
+NOTE:
+...

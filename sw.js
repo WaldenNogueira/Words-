@@ -1,42 +1,30 @@
-const CACHE_NAME = 'words-pwa-v5.0.0';
-const APP_SHELL = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
-];
+const CACHE_NAME = 'words-pwa-v6.0.0';
+const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(APP_SHELL))
-      .then(() => self.skipWaiting())
-  );
+self.addEventListener('install', (event) => {
+  self.skipWaiting();
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)));
 });
 
-self.addEventListener('activate', event => {
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys()
-      .then(keys => Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))))
+    caches.keys().then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))))
       .then(() => self.clients.claim())
   );
 });
 
-self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
-});
-
-self.addEventListener('fetch', event => {
+self.addEventListener('fetch', (event) => {
   const request = event.request;
-  const url = new URL(request.url);
+  if (request.method !== 'GET') return;
 
-  if (request.mode === 'navigate') {
+  const isNavigation = request.mode === 'navigate' || request.destination === 'document';
+
+  if (isNavigation) {
     event.respondWith(
       fetch(request)
-        .then(response => {
+        .then((response) => {
           const copy = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put('./index.html', copy));
+          caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', copy));
           return response;
         })
         .catch(() => caches.match('./index.html'))
@@ -44,15 +32,11 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  if (url.origin !== location.origin) return;
-
   event.respondWith(
-    caches.match(request).then(cached => {
-      return cached || fetch(request).then(response => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
-        return response;
-      });
-    })
+    caches.match(request).then((cached) => cached || fetch(request).then((response) => {
+      const copy = response.clone();
+      caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+      return response;
+    }))
   );
 });

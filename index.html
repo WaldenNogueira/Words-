@@ -1,771 +1,729 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#fbfbfa" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <title>Words</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="icon" href="icon-192.png" />
   <style>
     :root {
-      --bg: #fbfbfa;
-      --surface: #ffffff;
-      --surface-soft: #f7f7f5;
-      --ink: #2f3437;
-      --ink-2: #37352f;
-      --muted: #787774;
-      --soft: #9b9a97;
-      --line: rgba(55, 53, 47, .16);
-      --line-strong: rgba(55, 53, 47, .28);
-      --hover: rgba(55, 53, 47, .06);
-      --active: rgba(55, 53, 47, .09);
-      --accent: #2f3437;
-      --danger: #c93a2f;
-      --danger-soft: #fff4f2;
-      --star: #c78214;
-      --radius-lg: 14px;
-      --radius-md: 10px;
-      --radius-sm: 8px;
-      --shadow: 0 1px 2px rgba(15, 15, 15, .04), 0 8px 24px rgba(15, 15, 15, .04);
-      color-scheme: light;
+      --bg: #ffffff;
+      --paper: #ffffff;
+      --soft: #f7f7f5;
+      --soft-2: #f1f1ef;
+      --text: #202020;
+      --muted: #6f6f68;
+      --faint: #9b9a93;
+      --line: #e7e6e1;
+      --line-strong: #d9d8d2;
+      --accent: #2f2f2f;
+      --danger: #b3261e;
+      --radius: 14px;
+      --shadow: 0 1px 2px rgba(15, 15, 15, .04);
+      --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     * { box-sizing: border-box; }
-    html, body { min-height: 100%; }
+    html { -webkit-text-size-adjust: 100%; }
     body {
       margin: 0;
+      min-height: 100vh;
       background: var(--bg);
-      color: var(--ink);
-      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
-      font-size: 15px;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+      color: var(--text);
+      font-family: var(--font);
+      line-height: 1.45;
     }
 
     button, input, textarea { font: inherit; }
-    button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    button { -webkit-tap-highlight-color: transparent; }
     a { color: inherit; }
 
     .app {
-      width: min(1040px, 100%);
+      width: min(920px, 100%);
       margin: 0 auto;
-      padding: max(22px, env(safe-area-inset-top)) 18px max(42px, env(safe-area-inset-bottom));
+      padding: 28px 18px 48px;
     }
 
     .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 22px;
+      gap: 12px;
+      margin-bottom: 20px;
     }
 
-    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
-    .logo {
-      width: 38px;
-      height: 38px;
-      border-radius: 9px;
-      display: grid;
-      place-items: center;
-      background: var(--ink-2);
-      color: #fff;
-      font-weight: 700;
-      letter-spacing: -.04em;
-      flex: 0 0 auto;
-    }
     h1 {
       margin: 0;
-      font-size: clamp(1.9rem, 7vw, 2.7rem);
-      line-height: 1.05;
-      letter-spacing: -.055em;
-      font-weight: 740;
-      color: var(--ink-2);
-    }
-    .subtitle {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: .95rem;
-      line-height: 1.45;
+      font-size: clamp(32px, 8vw, 54px);
+      letter-spacing: -0.05em;
+      line-height: .95;
+      font-weight: 720;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: minmax(0, .96fr) minmax(330px, 1.04fr);
-      gap: 18px;
-      align-items: start;
-    }
-    @media (max-width: 880px) { .grid { grid-template-columns: 1fr; } }
-
-    .panel {
-      background: var(--surface);
+    .install-btn {
+      display: none;
       border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
+      background: var(--paper);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 9px 13px;
+      font-size: 13px;
       box-shadow: var(--shadow);
-      overflow: hidden;
     }
-    .panel-inner { padding: 18px; }
-    .section-title {
+    .install-btn.visible { display: inline-flex; }
+
+    .composer {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--paper);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .composer-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .composer-title {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: -0.015em;
+      font-weight: 650;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 12.5px;
+      margin: 0;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn {
+      border: 1px solid var(--line-strong);
+      border-radius: 12px;
+      background: var(--paper);
+      color: var(--text);
+      padding: 12px 14px;
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 620;
+      cursor: pointer;
+      transition: background .16s ease, border-color .16s ease, transform .12s ease;
+    }
+    .btn:active { transform: scale(.99); }
+    .btn.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .btn:hover { background: var(--soft); }
+    .btn.primary:hover { background: #111; }
+
+    .status {
+      min-height: 22px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .tools {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 22px 0 12px;
+    }
+
+    .search {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--soft);
+      color: var(--text);
+      padding: 0 13px;
+      outline: none;
+    }
+    .search:focus {
+      background: var(--paper);
+      border-color: var(--line-strong);
+    }
+
+    .section-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 16px;
+      margin: 10px 0;
     }
-    .section-title h2 {
+    h2 {
       margin: 0;
-      color: var(--ink-2);
-      font-size: .98rem;
-      letter-spacing: -.02em;
-      font-weight: 720;
-    }
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      border: 1px solid var(--line);
       color: var(--muted);
-      background: var(--surface-soft);
-      border-radius: 999px;
-      padding: 5px 9px;
-      font-size: .76rem;
+      font-size: 13px;
       font-weight: 650;
-      white-space: nowrap;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+    .count {
+      color: var(--faint);
+      font-size: 12px;
     }
 
-    label {
-      display: block;
-      margin: 14px 0 6px;
+    .list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .empty {
+      border: 1px dashed var(--line-strong);
+      border-radius: var(--radius);
       color: var(--muted);
-      font-size: .82rem;
-      font-weight: 640;
-    }
-    input, textarea {
-      width: 100%;
-      border: 1px solid transparent;
-      border-radius: var(--radius-md);
-      color: var(--ink-2);
-      background: var(--surface-soft);
-      outline: none;
-      padding: 11px 12px;
-      transition: border .16s ease, background .16s ease, box-shadow .16s ease;
-    }
-    textarea { min-height: 74px; resize: vertical; line-height: 1.5; }
-    input::placeholder, textarea::placeholder { color: #aaa8a4; }
-    input:focus, textarea:focus {
-      border-color: var(--line-strong);
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(55, 53, 47, .08);
+      background: var(--soft);
+      padding: 22px;
+      text-align: center;
+      font-size: 14px;
     }
 
-    .term-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: end; }
-    @media (max-width: 560px) { .term-row { grid-template-columns: 1fr; } }
-    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    @media (max-width: 640px) { .split { grid-template-columns: 1fr; } }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
 
-    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 13px; }
-    .btn {
-      border: 1px solid transparent;
-      border-radius: var(--radius-md);
-      background: var(--surface-soft);
-      color: var(--ink-2);
-      padding: 10px 12px;
-      min-height: 40px;
+    .card-top {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .term-wrap { min-width: 0; }
+    .term {
+      font-size: 19px;
+      font-weight: 680;
+      letter-spacing: -0.018em;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
+    .ipa {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 13.5px;
+      letter-spacing: .01em;
+    }
+    .translation {
+      margin-top: 9px;
+      color: var(--text);
+      font-size: 14.5px;
+      overflow-wrap: anywhere;
+    }
+
+    .icon-row {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 7px;
-      text-decoration: none;
-      font-weight: 650;
-      font-size: .92rem;
-      transition: background .16s ease, border .16s ease, transform .1s ease;
-      user-select: none;
-    }
-    .btn:hover { background: var(--hover); border-color: var(--line); }
-    .btn:active { transform: translateY(1px); }
-    .btn.primary { background: var(--ink-2); color: #fff; border-color: var(--ink-2); }
-    .btn.good { background: #eef7f1; border-color: #cfe8d8; color: #1e5a38; }
-    .btn.danger { border-color: #f2cac5; color: var(--danger); background: var(--danger-soft); }
-    .btn.small { min-height: 34px; padding: 7px 10px; font-size: .82rem; }
-    .btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
-
-    .icon-btn {
-      width: 34px;
-      height: 34px;
-      min-width: 34px;
-      border: 1px solid transparent;
-      border-radius: var(--radius-sm);
+      border: 0;
+      border-radius: 8px;
       background: transparent;
       color: var(--muted);
-      display: inline-grid;
-      place-items: center;
+      cursor: pointer;
+      font-size: 16px;
       line-height: 1;
-      font-size: .98rem;
-      transition: background .16s ease, color .16s ease, border .16s ease;
     }
-    .icon-btn:hover { background: var(--hover); color: var(--ink-2); border-color: var(--line); }
-    .icon-btn.active { color: var(--star); background: #fff7e7; border-color: #efd6a4; }
-    .icon-btn.danger:hover { color: var(--danger); background: var(--danger-soft); border-color: #f2cac5; }
-    .icon-btn:focus-visible, .btn:focus-visible { outline: 3px solid rgba(55,53,47,.18); outline-offset: 2px; }
+    .icon-btn:hover { background: var(--soft-2); color: var(--text); }
+    .icon-btn.active { color: var(--text); }
+    .icon-btn.danger:hover { color: var(--danger); background: #fdf0ee; }
 
-    .status {
-      margin-top: 14px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--line);
-      background: #fff;
-      color: var(--muted);
-      padding: 10px 11px;
-      font-size: .88rem;
-      min-height: 40px;
-      line-height: 1.4;
-    }
-    .status strong { color: var(--ink-2); }
-
-    .links {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+    details.info {
       margin-top: 12px;
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
     }
-    @media (max-width: 600px) { .links { grid-template-columns: 1fr 1fr; } }
-    .links a, .links button {
-      border-radius: var(--radius-md);
-      padding: 10px 8px;
-      min-height: 40px;
-      text-align: center;
-      background: var(--surface-soft);
-      border: 1px solid transparent;
-      text-decoration: none;
-      color: var(--ink-2);
-      font-weight: 650;
-      font-size: .86rem;
-    }
-    .links a:hover, .links button:hover { background: var(--hover); border-color: var(--line); }
-
-    .toolbar { display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px; }
-    .filters { margin-top:0; margin-bottom:14px; }
-
-    .list { display: grid; gap: 10px; }
-    .empty {
+    details.info summary {
+      cursor: pointer;
       color: var(--muted);
-      border: 1px dashed var(--line-strong);
-      border-radius: var(--radius-lg);
-      padding: 22px 18px;
-      text-align: center;
-      background: var(--surface-soft);
-    }
-
-    .word-item {
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      background: var(--surface);
-      padding: 13px;
-      display: grid;
-      gap: 10px;
-      transition: background .16s ease, border .16s ease, transform .12s ease;
-    }
-    .word-item:hover { background: #fff; border-color: var(--line-strong); transform: translateY(-1px); }
-    .word-top { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: start; }
-    .word-main { min-width: 0; }
-    .word-term {
-      color: var(--ink-2);
-      font-size: 1.02rem;
-      font-weight: 730;
-      letter-spacing: -.025em;
-      overflow-wrap: anywhere;
-    }
-    .word-definition {
-      color: var(--muted);
-      font-size: .88rem;
-      line-height: 1.45;
-      margin-top: 5px;
-      overflow-wrap: anywhere;
-    }
-    .word-actions { display: flex; gap: 2px; align-items: center; flex-wrap: nowrap; }
-    @media (max-width: 500px) {
-      .word-top { grid-template-columns: 1fr; }
-      .word-actions { justify-content: flex-start; }
-    }
-
-    .dropdowns { display: grid; gap: 7px; }
-    .word-details {
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      background: var(--surface-soft);
-      overflow: hidden;
-    }
-    .word-details summary {
+      font-size: 13px;
+      font-weight: 620;
       list-style: none;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      min-height: 38px;
-      padding: 8px 10px;
-      font-weight: 650;
-      color: var(--ink-2);
-      cursor: pointer;
       user-select: none;
     }
-    .word-details summary::-webkit-details-marker { display: none; }
-    .word-details summary::after {
+    details.info summary::-webkit-details-marker { display: none; }
+    details.info summary::after {
       content: "⌄";
-      width: 22px;
-      height: 22px;
-      display: inline-grid;
-      place-items: center;
-      border-radius: 6px;
-      color: var(--muted);
+      color: var(--faint);
+      font-size: 16px;
       transition: transform .16s ease;
-      flex: 0 0 auto;
     }
-    .word-details[open] summary::after { transform: rotate(180deg); }
+    details.info[open] summary::after { transform: rotate(180deg); }
+
     .details-body {
-      border-top: 1px solid var(--line);
-      padding: 10px;
-      color: var(--ink-2);
-      line-height: 1.5;
-      font-size: .9rem;
-      overflow-wrap: anywhere;
-      background: #fff;
-    }
-
-    .word-links { display: flex; flex-wrap: wrap; gap: 7px; }
-    .word-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      min-height: 31px;
-      padding: 6px 9px;
-      border: 1px solid transparent;
-      border-radius: var(--radius-sm);
-      background: var(--surface-soft);
-      text-decoration: none;
-      font-size: .8rem;
-      font-weight: 650;
-      color: var(--muted);
-    }
-    .word-link:hover { background: var(--hover); border-color: var(--line); color: var(--ink-2); }
-    .word-link.gpt { color: #5f3dc4; background: #f6f2ff; }
-    .notes {
-      color: var(--muted);
-      font-size: .86rem;
-      line-height: 1.45;
-      border-left: 2px solid var(--line-strong);
-      padding-left: 9px;
-    }
-
-    .settings {
+      margin-top: 10px;
       display: grid;
-      gap: 7px;
-      color: var(--muted);
-      font-size: .84rem;
-      margin-top: 13px;
+      gap: 10px;
+      color: var(--text);
+      font-size: 14px;
     }
-    .settings label { display:flex; align-items:center; gap:7px; margin:0; color: var(--muted); font-weight: 560; }
-    .settings input { width: auto; accent-color: var(--ink-2); }
-    .footer { color: var(--soft); font-size: .76rem; line-height: 1.45; margin-top: 13px; }
-    .spinner { width: 15px; height: 15px; border: 2px solid rgba(55,53,47,.18); border-top-color: var(--ink-2); border-radius: 50%; animation: spin .8s linear infinite; display: inline-block; vertical-align: -3px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .label {
+      color: var(--faint);
+      font-size: 11.5px;
+      font-weight: 650;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .value { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .link-chip {
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: var(--muted);
+      font-size: 12.5px;
+      background: var(--paper);
+    }
+    .link-chip:hover { background: var(--soft); color: var(--text); }
 
     .toast {
       position: fixed;
       left: 50%;
       bottom: max(18px, env(safe-area-inset-bottom));
-      transform: translateX(-50%) translateY(18px);
+      transform: translateX(-50%) translateY(10px);
       opacity: 0;
       pointer-events: none;
-      background: var(--ink-2);
-      color: #fff;
+      background: #202020;
+      color: white;
       border-radius: 999px;
-      padding: 10px 13px;
-      font-weight: 650;
-      box-shadow: 0 14px 50px rgba(0,0,0,.22);
-      transition: opacity .2s, transform .2s;
+      padding: 10px 14px;
+      font-size: 13px;
+      max-width: min(92vw, 520px);
+      box-shadow: 0 12px 26px rgba(0,0,0,.16);
+      transition: opacity .18s ease, transform .18s ease;
       z-index: 50;
-      width: max-content;
-      max-width: calc(100% - 32px);
+      text-align: center;
     }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    .hidden { display: none !important; }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      background: rgba(0,0,0,.18);
+      padding: 16px;
+      z-index: 40;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      width: min(640px, 100%);
+      max-height: min(88vh, 780px);
+      overflow: auto;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.18);
+      padding: 16px;
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .modal h3 { margin: 0; font-size: 18px; letter-spacing: -0.02em; }
+    .close-btn {
+      border: 0;
+      background: var(--soft);
+      border-radius: 10px;
+      width: 34px;
+      height: 34px;
+      cursor: pointer;
+    }
+    .field-grid { display: grid; gap: 10px; }
+    label.field span {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+    }
+    input.field-input, textarea.field-input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 11px 12px;
+      background: var(--soft);
+      color: var(--text);
+      outline: none;
+    }
+    textarea.field-input { min-height: 74px; resize: vertical; }
+    textarea.long { min-height: 150px; }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .modal-actions .btn { min-height: 40px; padding: 9px 12px; }
+
+    @media (max-width: 560px) {
+      .app { padding: 24px 14px 40px; }
+      .actions { grid-template-columns: 1fr; }
+      .composer-head { display: block; }
+      .hint { margin-top: 4px; }
+      .card { padding: 13px; }
+      .card-top { grid-template-columns: 1fr; }
+      .icon-row { justify-content: flex-start; margin-left: -4px; }
+      .modal-backdrop { align-items: flex-end; padding: 0; }
+      .modal { border-radius: 18px 18px 0 0; max-height: 92vh; }
+    }
   </style>
 </head>
 <body>
   <main class="app">
-    <section class="topbar">
-      <div class="brand">
-        <div class="logo">W</div>
-        <div>
-          <h1>Words</h1>
-          <p class="subtitle">Um caderno simples para capturar termos, gerar contexto e revisar.</p>
-        </div>
+    <header class="topbar">
+      <h1>Words</h1>
+      <button id="installBtn" class="install-btn">Install</button>
+    </header>
+
+    <section class="composer" aria-labelledby="new-entry-title">
+      <div class="composer-head">
+        <h2 id="new-entry-title" class="composer-title">New entry</h2>
+        <p class="hint">Copy a term → Ask GPT → copy the answer → Paste response.</p>
       </div>
-      <button id="installBtn" class="btn small hidden">📱 Instalar</button>
+      <div class="actions">
+        <button id="askGptBtn" class="btn primary">🤖 Ask GPT</button>
+        <button id="pasteResponseBtn" class="btn">📋 Paste response</button>
+      </div>
+      <div id="status" class="status">Ready.</div>
     </section>
 
-    <section class="grid">
-      <div class="panel">
-        <div class="panel-inner">
-          <div class="section-title">
-            <h2>Novo termo</h2>
-            <span class="pill" id="countPill">0 salvos</span>
-          </div>
+    <div class="tools">
+      <input id="search" class="search" type="search" placeholder="Search saved words" autocomplete="off" />
+    </div>
 
-          <div class="term-row">
-            <div>
-              <label for="term">Termo ou expressão</label>
-              <input id="term" autocomplete="off" placeholder="Ex.: make it out, livelihood, get rid of" />
-            </div>
-            <button id="pasteBtn" class="btn">📋 Colar</button>
-          </div>
+    <div class="section-row">
+      <h2>Saved words</h2>
+      <span id="count" class="count">0 saved</span>
+    </div>
 
-          <div class="btn-row">
-            <button id="generateBtn" class="btn primary">✨ Gerar</button>
-            <button id="speakBtn" class="btn">🔊 Áudio</button>
-            <button id="gptBtn" class="btn">🤖 GPT</button>
-            <button id="saveBtn" class="btn good">💾 Salvar</button>
-            <button id="clearBtn" class="btn">Limpar</button>
-          </div>
-
-          <div id="status" class="status">Pronto. Cole uma palavra e toque em <strong>Gerar</strong>.</div>
-
-          <div class="links">
-            <a id="youglishLink" href="#" target="_blank" rel="noopener">YouGlish</a>
-            <a id="cambridgeLink" href="#" target="_blank" rel="noopener">Cambridge</a>
-            <a id="longmanLink" href="#" target="_blank" rel="noopener">Longman</a>
-            <button id="gptLinkBtn" type="button">GPT query</button>
-          </div>
-
-          <div class="split">
-            <div>
-              <label for="translation">Tradução PT-BR</label>
-              <textarea id="translation" placeholder="Preenchido automaticamente, mas editável"></textarea>
-            </div>
-            <div>
-              <label for="definition">Definição em inglês</label>
-              <textarea id="definition" placeholder="Preenchido automaticamente quando o dicionário encontrar"></textarea>
-            </div>
-          </div>
-
-          <label for="example">Exemplo em inglês</label>
-          <textarea id="example" placeholder="Exemplo de uso"></textarea>
-
-          <label for="notes">Minha observação</label>
-          <textarea id="notes" placeholder="Onde vi, dúvida, frase do filme, aula etc."></textarea>
-
-          <div class="settings">
-            <label><input id="autoGenerate" type="checkbox" checked /> gerar ao colar ou apertar Enter</label>
-            <label><input id="autoSpeak" type="checkbox" /> falar áudio depois de gerar</label>
-          </div>
-
-          <p class="footer">Quando a API não encontrar definição ou exemplo, use o botão GPT: ele cria uma pergunta pronta, copia e tenta abrir/compartilhar com o ChatGPT.</p>
-        </div>
-      </div>
-
-      <aside class="panel">
-        <div class="panel-inner">
-          <div class="section-title">
-            <h2>Meus termos</h2>
-            <span class="pill" id="favPill">0 favoritos</span>
-          </div>
-
-          <div class="toolbar">
-            <input id="search" placeholder="Buscar salvos..." />
-          </div>
-          <div class="btn-row filters">
-            <button id="showAllBtn" class="btn small">Todos</button>
-            <button id="showFavBtn" class="btn small">⭐ Favoritos</button>
-            <button id="deleteAllBtn" class="btn small danger">Apagar tudo</button>
-          </div>
-
-          <div id="list" class="list"></div>
-        </div>
-      </aside>
-    </section>
+    <section id="list" class="list" aria-live="polite"></section>
   </main>
 
-  <div id="toast" class="toast"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <div id="editModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="editTitle">Edit card</h3>
+        <button id="closeEditBtn" class="close-btn" aria-label="Close">✕</button>
+      </div>
+      <div class="field-grid">
+        <label class="field"><span>Term</span><input id="editTerm" class="field-input" /></label>
+        <label class="field"><span>IPA</span><input id="editIpa" class="field-input" placeholder="/ˈlɪvliˌhʊd/" /></label>
+        <label class="field"><span>Translation</span><textarea id="editTranslation" class="field-input"></textarea></label>
+        <label class="field"><span>Definition</span><textarea id="editDefinition" class="field-input"></textarea></label>
+        <label class="field"><span>Example</span><textarea id="editExample" class="field-input"></textarea></label>
+        <label class="field"><span>Note</span><textarea id="editNote" class="field-input"></textarea></label>
+      </div>
+      <div class="modal-actions">
+        <button id="cancelEditBtn" class="btn">Cancel</button>
+        <button id="saveEditBtn" class="btn primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="pasteModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="pasteTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="pasteTitle">Paste GPT response</h3>
+        <button id="closePasteBtn" class="close-btn" aria-label="Close">✕</button>
+      </div>
+      <label class="field">
+        <span>Response text</span>
+        <textarea id="manualPasteText" class="field-input long" placeholder="TERM:&#10;...&#10;&#10;IPA:&#10;...&#10;&#10;TRANSLATION:&#10;..."></textarea>
+      </label>
+      <div class="modal-actions">
+        <button id="cancelPasteBtn" class="btn">Cancel</button>
+        <button id="savePasteBtn" class="btn primary">Save card</button>
+      </div>
+    </div>
+  </div>
 
   <script>
+    const STORAGE_KEY = 'words-pwa-v3-items';
     const $ = (id) => document.getElementById(id);
-    const storeKey = 'words-pwa-v3-items';
+
     let items = [];
     let editingId = null;
-    let audioUrl = '';
-    let showOnlyFavs = false;
     let deferredInstallPrompt = null;
 
     const els = {
-      term: $('term'), translation: $('translation'), definition: $('definition'), example: $('example'), notes: $('notes'),
-      pasteBtn: $('pasteBtn'), generateBtn: $('generateBtn'), speakBtn: $('speakBtn'), gptBtn: $('gptBtn'), gptLinkBtn: $('gptLinkBtn'), saveBtn: $('saveBtn'), clearBtn: $('clearBtn'),
-      status: $('status'), youglishLink: $('youglishLink'), cambridgeLink: $('cambridgeLink'), longmanLink: $('longmanLink'),
-      search: $('search'), list: $('list'), countPill: $('countPill'), favPill: $('favPill'),
-      showAllBtn: $('showAllBtn'), showFavBtn: $('showFavBtn'), deleteAllBtn: $('deleteAllBtn'),
-      autoGenerate: $('autoGenerate'), autoSpeak: $('autoSpeak'), installBtn: $('installBtn'), toast: $('toast')
+      askGptBtn: $('askGptBtn'),
+      pasteResponseBtn: $('pasteResponseBtn'),
+      status: $('status'),
+      search: $('search'),
+      list: $('list'),
+      count: $('count'),
+      toast: $('toast'),
+      installBtn: $('installBtn'),
+      editModal: $('editModal'),
+      closeEditBtn: $('closeEditBtn'),
+      cancelEditBtn: $('cancelEditBtn'),
+      saveEditBtn: $('saveEditBtn'),
+      editTerm: $('editTerm'),
+      editIpa: $('editIpa'),
+      editTranslation: $('editTranslation'),
+      editDefinition: $('editDefinition'),
+      editExample: $('editExample'),
+      editNote: $('editNote'),
+      pasteModal: $('pasteModal'),
+      closePasteBtn: $('closePasteBtn'),
+      cancelPasteBtn: $('cancelPasteBtn'),
+      savePasteBtn: $('savePasteBtn'),
+      manualPasteText: $('manualPasteText')
     };
 
+    function normalizeItem(raw) {
+      const term = raw.term || raw.word || raw.phrase || '';
+      return {
+        id: raw.id || crypto.randomUUID(),
+        term: term.trim(),
+        ipa: (raw.ipa || raw.pronunciation || '').trim(),
+        translation: (raw.translation || '').trim(),
+        definition: (raw.definition || '').trim(),
+        example: (raw.example || raw.examples || '').trim(),
+        note: (raw.note || raw.notes || '').trim(),
+        favorite: Boolean(raw.favorite),
+        updatedAt: raw.updatedAt || new Date().toISOString()
+      };
+    }
+
     function loadItems() {
-      try { items = JSON.parse(localStorage.getItem(storeKey) || '[]'); }
-      catch { items = []; }
+      try {
+        const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        items = Array.isArray(stored) ? stored.map(normalizeItem).filter(i => i.term) : [];
+      } catch {
+        items = [];
+      }
       render();
     }
 
     function persist() {
-      localStorage.setItem(storeKey, JSON.stringify(items));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
       render();
     }
+
+    function setStatus(message) { els.status.textContent = message; }
 
     function toast(message) {
       els.toast.textContent = message;
       els.toast.classList.add('show');
-      clearTimeout(toast._t);
-      toast._t = setTimeout(() => els.toast.classList.remove('show'), 2300);
+      clearTimeout(toast.timer);
+      toast.timer = setTimeout(() => els.toast.classList.remove('show'), 2400);
     }
 
-    function setStatus(message, type = 'normal') {
-      const icon = type === 'loading' ? '<span class="spinner"></span>' : type === 'ok' ? '✅' : type === 'warn' ? '⚠️' : 'ℹ️';
-      els.status.innerHTML = `${icon} ${message}`;
+    async function readClipboardText() {
+      if (!navigator.clipboard?.readText) throw new Error('Clipboard is not available.');
+      return (await navigator.clipboard.readText() || '').trim();
     }
 
-    function encodeTerm(term) { return encodeURIComponent((term || '').trim()); }
-
-    function setLinks(term) {
-      const q = encodeTerm(term || '');
-      const safe = q || 'english';
-      els.youglishLink.href = `https://youglish.com/pronounce/${safe}/english`;
-      els.cambridgeLink.href = `https://dictionary.cambridge.org/dictionary/english/${safe}`;
-      els.longmanLink.href = `https://www.ldoceonline.com/dictionary/${safe}`;
+    async function writeClipboardText(text) {
+      if (!navigator.clipboard?.writeText) return false;
+      await navigator.clipboard.writeText(text);
+      return true;
     }
 
-    function resetForm() {
-      editingId = null;
-      audioUrl = '';
-      els.term.value = '';
-      els.translation.value = '';
-      els.definition.value = '';
-      els.example.value = '';
-      els.notes.value = '';
-      setLinks('');
-      setStatus('Pronto. Cole uma palavra e toque em <strong>Gerar</strong>.');
-      els.term.focus();
-    }
-
-    async function pasteTerm() {
-      try {
-        const text = await navigator.clipboard.readText();
-        const clean = cleanSharedText(text);
-        if (!clean) return toast('Nada copiado.');
-        els.term.value = clean;
-        setLinks(clean);
-        toast('Termo colado.');
-        if (els.autoGenerate.checked) generate();
-      } catch (err) {
-        toast('O navegador bloqueou o acesso à área de transferência. Cole manualmente.');
-      }
-    }
-
-    function cleanSharedText(text) {
-      return (text || '')
-        .replace(/https?:\/\/\S+/g, '')
+    function cleanTerm(text) {
+      return String(text || '')
+        .replace(/```[\s\S]*?```/g, ' ')
+        .replace(/https?:\/\/\S+/g, ' ')
         .replace(/\s+/g, ' ')
         .trim()
-        .slice(0, 140);
+        .slice(0, 160);
     }
 
-    async function translateTerm(term) {
-      const url = `https://api.mymemory.translated.net/get?q=${encodeTerm(term)}&langpair=en|pt-BR`;
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('translation failed');
-      const data = await response.json();
-      const translated = data?.responseData?.translatedText || '';
-      if (!translated || translated.toLowerCase() === term.toLowerCase()) return '';
-      return translated.replace(/&quot;/g, '"').trim();
+    function buildGptPrompt(term) {
+      return `Create one English vocabulary card for a Brazilian Portuguese speaker.\n\nTERM:\n${term}\n\nRequirements:\n- Use natural American English.\n- If the term is an expression, explain the expression as a whole.\n- IPA must be American English pronunciation.\n- Translation must be in Brazilian Portuguese.\n- Definition must be simple, natural English.\n- Example must sound like something an American would actually say.\n- Note should be short and practical.\n\nReturn ONLY this exact format. Do not add markdown, bullets, or extra explanation.\n\nTERM:\n${term}\n\nIPA:\n/.../\n\nTRANSLATION:\n...\n\nDEFINITION:\n...\n\nEXAMPLE:\n...\n\nNOTE:\n...`;
     }
 
-    async function lookupDictionary(term) {
-      const normalized = term.trim().toLowerCase();
-      const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${encodeTerm(normalized)}`;
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('dictionary not found');
-      const data = await response.json();
-      const entry = Array.isArray(data) ? data[0] : null;
-      if (!entry) return null;
-      let definition = '';
-      let example = '';
-      let partOfSpeech = '';
-      for (const meaning of entry.meanings || []) {
-        if (!partOfSpeech && meaning.partOfSpeech) partOfSpeech = meaning.partOfSpeech;
-        for (const def of meaning.definitions || []) {
-          if (!definition && def.definition) definition = def.definition;
-          if (!example && def.example) example = def.example;
-          if (definition && example) break;
-        }
-        if (definition && example) break;
-      }
-      let foundAudio = '';
-      for (const phonetic of entry.phonetics || []) {
-        if (phonetic.audio) { foundAudio = phonetic.audio; break; }
-      }
-      if (partOfSpeech && definition) definition = `${partOfSpeech}: ${definition}`;
-      return { definition, example, audio: foundAudio };
-    }
-
-    function fallbackExample(term) {
-      return `I heard “${term}” and wanted to understand how native speakers use it.`;
-    }
-
-    function isMissingField(value) {
-      const v = (value || '').toLowerCase().trim();
-      return !v || v.includes('not found') || v.includes('não encontrada') || v.includes('não encontrado') || v.includes('edit this field');
-    }
-
-    async function generate() {
-      const term = els.term.value.trim();
-      if (!term) return toast('Digite ou cole um termo primeiro.');
-      setLinks(term);
-      audioUrl = '';
-      setStatus('<strong>Gerando...</strong> Buscando tradução, definição e exemplo.', 'loading');
-      els.generateBtn.disabled = true;
-      let translated = '', dict = null, warnings = [];
-
-      try { translated = await translateTerm(term); }
-      catch (err) { warnings.push('tradução'); }
-
-      try { dict = await lookupDictionary(term); }
-      catch (err) { warnings.push('dicionário'); }
-
-      if (translated) els.translation.value = translated;
-      if (dict?.definition) els.definition.value = dict.definition;
-      if (dict?.example) els.example.value = dict.example;
-      if (dict?.audio) audioUrl = dict.audio;
-
-      if (!els.example.value.trim()) els.example.value = fallbackExample(term);
-      if (!els.definition.value.trim()) els.definition.value = 'Definition not found automatically. Use GPT, Cambridge or Longman and edit this field.';
-      if (!els.translation.value.trim()) els.translation.value = 'Tradução não encontrada automaticamente. Edite este campo.';
-
-      els.generateBtn.disabled = false;
-      if (warnings.length || isMissingField(els.definition.value)) setStatus('Alguns campos foram preenchidos com fallback. Use <strong>GPT</strong> para pedir definição, exemplos e uso real.', 'warn');
-      else setStatus('Campos preenchidos. Revise e toque em <strong>Salvar</strong>.', 'ok');
-      if (els.autoSpeak.checked) speakTerm();
-    }
-
-    function speakTerm(textOverride) {
-      const term = textOverride || els.term.value.trim();
-      if (!term) return toast('Nada para ouvir.');
-      if (audioUrl) {
-        try {
-          const audio = new Audio(audioUrl);
-          audio.play().catch(() => speakWithBrowser(term));
-        } catch { speakWithBrowser(term); }
-      } else {
-        speakWithBrowser(term);
-      }
-    }
-
-    function speakWithBrowser(term) {
-      if (!('speechSynthesis' in window)) return toast('Áudio não disponível neste navegador.');
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(term);
-      utterance.lang = 'en-US';
-      utterance.rate = 0.88;
-      const voices = window.speechSynthesis.getVoices();
-      const voice = voices.find(v => /en[-_]US/i.test(v.lang)) || voices.find(v => /^en/i.test(v.lang));
-      if (voice) utterance.voice = voice;
-      window.speechSynthesis.speak(utterance);
-    }
-
-    function buildGptPrompt(term, item = {}) {
-      const safeTerm = (term || '').trim();
-      const currentTranslation = item.translation || els.translation.value.trim();
-      const currentDefinition = item.definition || els.definition.value.trim();
-      const currentExample = item.example || els.example.value.trim();
-      return `Crie uma ficha curta de vocabulário para o termo/expressão em inglês: "${safeTerm}".\n\nResponda em português, mas mantenha definição e exemplos em inglês quando fizer sentido. Quero:\n1) Tradução natural em português do Brasil.\n2) Definição simples em inglês.\n3) 3 exemplos naturais em inglês, com contexto real.\n4) Observações de uso: formal/informal, phrasal verb, expressão idiomática, falso cognato ou pronúncia, se relevante.\n5) Uma frase curta que eu possa salvar no meu app.\n\nCampos atuais, caso ajudem:\nTradução: ${currentTranslation || 'vazio'}\nDefinição: ${currentDefinition || 'vazio'}\nExemplo: ${currentExample || 'vazio'}\n\nSe o termo não for comum, diga claramente e sugira a forma mais natural.`;
-    }
-
-    async function shareWithGPT(term, item = {}) {
-      const cleanTerm = (term || '').trim();
-      if (!cleanTerm) return toast('Digite ou selecione um termo primeiro.');
-      const prompt = buildGptPrompt(cleanTerm, item);
-      const url = `https://chatgpt.com/?q=${encodeURIComponent(prompt)}`;
-
+    async function askGptFromClipboard() {
+      let term = '';
       try {
-        await navigator.clipboard.writeText(prompt);
-      } catch {}
+        term = cleanTerm(await readClipboardText());
+      } catch {
+        term = cleanTerm(prompt('Paste or type the English term:') || '');
+      }
+      if (!term) return toast('No term found in the clipboard.');
+
+      const promptText = buildGptPrompt(term);
+      try { await writeClipboardText(promptText); } catch {}
+
+      setStatus(`Prompt ready for “${term}”. Paste it in ChatGPT, then copy the answer and come back.`);
 
       if (navigator.share) {
         try {
-          await navigator.share({ title: `Words: ${cleanTerm}`, text: prompt, url: 'https://chatgpt.com/' });
-          toast('Query enviada para compartilhar.');
+          await navigator.share({ title: `Words: ${term}`, text: promptText });
+          toast('Prompt shared. Copy the GPT answer when it is ready.');
           return;
-        } catch (err) {
-          // usuário pode cancelar o compartilhamento; seguimos para fallback
+        } catch {
+          // Continue to browser fallback.
         }
       }
 
+      toast('Prompt copied. Opening ChatGPT.');
+      const url = `https://chatgpt.com/?q=${encodeURIComponent(promptText)}`;
       try { window.open(url, '_blank', 'noopener'); }
-      catch { window.location.href = url; }
-      toast('Query copiada e ChatGPT aberto.');
+      catch { window.location.href = 'https://chatgpt.com/'; }
     }
 
-    function getFormData() {
-      const term = els.term.value.trim();
-      if (!term) return null;
-      return {
-        id: editingId || crypto.randomUUID(),
-        term,
-        translation: els.translation.value.trim(),
-        definition: els.definition.value.trim(),
-        example: els.example.value.trim(),
-        notes: els.notes.value.trim(),
-        favorite: editingId ? (items.find(i => i.id === editingId)?.favorite || false) : false,
-        audioUrl,
-        links: {
-          youglish: els.youglishLink.href,
-          cambridge: els.cambridgeLink.href,
-          longman: els.longmanLink.href
-        },
+    function stripCodeFences(text) {
+      return String(text || '')
+        .replace(/^\s*```(?:text|txt|markdown)?\s*/i, '')
+        .replace(/\s*```\s*$/i, '')
+        .trim();
+    }
+
+    function getField(text, labels) {
+      const allLabels = [
+        'TERM', 'WORD', 'PHRASE', 'IPA', 'PRONUNCIATION', 'TRANSLATION', 'DEFINITION', 'MEANING', 'EXAMPLE', 'EXAMPLES', 'NOTE', 'NOTES'
+      ];
+      const labelPattern = labels.map(escapeRegExp).join('|');
+      const allPattern = allLabels.map(escapeRegExp).join('|');
+      const re = new RegExp(`^\\s*(?:${labelPattern})\\s*:\\s*([\\s\\S]*?)(?=^\\s*(?:${allPattern})\\s*:|\\s*$)`, 'im');
+      const match = text.match(re);
+      return match ? match[1].trim() : '';
+    }
+
+    function escapeRegExp(str) {
+      return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function parseGptResponse(text) {
+      const clean = stripCodeFences(text);
+      const term = getField(clean, ['TERM', 'WORD', 'PHRASE']);
+      const ipa = getField(clean, ['IPA', 'PRONUNCIATION']);
+      const translation = getField(clean, ['TRANSLATION']);
+      const definition = getField(clean, ['DEFINITION', 'MEANING']);
+      const example = getField(clean, ['EXAMPLE', 'EXAMPLES']);
+      const note = getField(clean, ['NOTE', 'NOTES']);
+      return { term, ipa, translation, definition, example, note };
+    }
+
+    function saveParsedCard(parsed) {
+      const card = normalizeItem({
+        id: crypto.randomUUID(),
+        ...parsed,
         updatedAt: new Date().toISOString()
+      });
+      if (!card.term) return false;
+
+      const existingIndex = items.findIndex(i => i.term.toLowerCase() === card.term.toLowerCase());
+      if (existingIndex >= 0) {
+        card.favorite = items[existingIndex].favorite;
+        card.id = items[existingIndex].id;
+        items[existingIndex] = card;
+      } else {
+        items.unshift(card);
+      }
+      persist();
+      setStatus(`Saved: ${card.term}`);
+      toast(existingIndex >= 0 ? 'Card updated.' : 'Card saved.');
+      return true;
+    }
+
+    async function pasteGptResponse() {
+      try {
+        const text = await readClipboardText();
+        const parsed = parseGptResponse(text);
+        if (!parsed.term || (!parsed.translation && !parsed.definition && !parsed.example)) {
+          openPasteModal(text);
+          toast('Check the format before saving.');
+          return;
+        }
+        saveParsedCard(parsed);
+      } catch {
+        openPasteModal('');
+      }
+    }
+
+    function openPasteModal(text = '') {
+      els.manualPasteText.value = text;
+      els.pasteModal.classList.add('open');
+      setTimeout(() => els.manualPasteText.focus(), 50);
+    }
+    function closePasteModal() { els.pasteModal.classList.remove('open'); }
+
+    function saveManualPaste() {
+      const parsed = parseGptResponse(els.manualPasteText.value);
+      if (!parsed.term) return toast('TERM is missing.');
+      if (!parsed.translation && !parsed.definition && !parsed.example) return toast('The response needs more fields.');
+      if (saveParsedCard(parsed)) closePasteModal();
+    }
+
+    function itemLinks(term) {
+      const q = encodeURIComponent(term || 'english');
+      return {
+        youglish: `https://youglish.com/pronounce/${q}/english/us`,
+        cambridge: `https://dictionary.cambridge.org/dictionary/english/${q}`,
+        longman: `https://www.ldoceonline.com/dictionary/${q}`
       };
     }
 
-    function saveItem() {
-      const data = getFormData();
-      if (!data) return toast('Digite um termo antes de salvar.');
-      const existingIndex = items.findIndex(i => i.id === data.id);
-      const duplicateIndex = items.findIndex(i => i.term.toLowerCase() === data.term.toLowerCase() && i.id !== data.id);
-      if (duplicateIndex >= 0 && !confirm('Esse termo já existe. Deseja substituir o antigo?')) return;
-      if (duplicateIndex >= 0) items.splice(duplicateIndex, 1);
-      if (existingIndex >= 0) items[existingIndex] = data;
-      else items.unshift(data);
-      persist();
-      toast('Salvo.');
-      resetForm();
-    }
-
-    function editItem(id) {
-      const item = items.find(i => i.id === id);
-      if (!item) return;
-      editingId = id;
-      audioUrl = item.audioUrl || '';
-      els.term.value = item.term || '';
-      els.translation.value = item.translation || '';
-      els.definition.value = item.definition || '';
-      els.example.value = item.example || '';
-      els.notes.value = item.notes || '';
-      setLinks(item.term || '');
-      setStatus('Editando termo salvo. Faça as alterações e toque em <strong>Salvar</strong>.');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function deleteItem(id) {
-      const item = items.find(i => i.id === id);
-      if (!item) return;
-      if (!confirm(`Apagar “${item.term}”?`)) return;
-      items = items.filter(i => i.id !== id);
-      persist();
-      toast('Apagado.');
+    function speak(text) {
+      const term = (text || '').trim();
+      if (!term) return;
+      if (!('speechSynthesis' in window)) return toast('Audio is not available in this browser.');
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(term);
+      utterance.lang = 'en-US';
+      utterance.rate = .88;
+      const voices = window.speechSynthesis.getVoices?.() || [];
+      utterance.voice = voices.find(v => /en[-_]US/i.test(v.lang)) || voices.find(v => /^en/i.test(v.lang)) || null;
+      window.speechSynthesis.speak(utterance);
     }
 
     function toggleFavorite(id) {
@@ -775,70 +733,110 @@
       persist();
     }
 
-    function normalize(text) {
-      return (text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    function deleteItem(id) {
+      const item = items.find(i => i.id === id);
+      if (!item) return;
+      if (!confirm(`Delete “${item.term}”?`)) return;
+      items = items.filter(i => i.id !== id);
+      persist();
+      toast('Deleted.');
     }
 
-    function itemLink(item, type) {
-      const term = encodeTerm(item.term);
-      if (type === 'youglish') return item.links?.youglish || `https://youglish.com/pronounce/${term}/english`;
-      if (type === 'cambridge') return item.links?.cambridge || `https://dictionary.cambridge.org/dictionary/english/${term}`;
-      if (type === 'longman') return item.links?.longman || `https://www.ldoceonline.com/dictionary/${term}`;
-      return '#';
+    function openEdit(id) {
+      const item = items.find(i => i.id === id);
+      if (!item) return;
+      editingId = id;
+      els.editTerm.value = item.term || '';
+      els.editIpa.value = item.ipa || '';
+      els.editTranslation.value = item.translation || '';
+      els.editDefinition.value = item.definition || '';
+      els.editExample.value = item.example || '';
+      els.editNote.value = item.note || '';
+      els.editModal.classList.add('open');
+      setTimeout(() => els.editTerm.focus(), 50);
+    }
+
+    function closeEdit() {
+      editingId = null;
+      els.editModal.classList.remove('open');
+    }
+
+    function saveEdit() {
+      const index = items.findIndex(i => i.id === editingId);
+      if (index < 0) return closeEdit();
+      const term = els.editTerm.value.trim();
+      if (!term) return toast('Term is required.');
+      items[index] = normalizeItem({
+        ...items[index],
+        term,
+        ipa: els.editIpa.value,
+        translation: els.editTranslation.value,
+        definition: els.editDefinition.value,
+        example: els.editExample.value,
+        note: els.editNote.value,
+        updatedAt: new Date().toISOString()
+      });
+      persist();
+      closeEdit();
+      toast('Saved.');
+    }
+
+    function normalizeSearch(text) {
+      return String(text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
 
     function render() {
-      els.countPill.textContent = `${items.length} salvo${items.length === 1 ? '' : 's'}`;
-      const favCount = items.filter(i => i.favorite).length;
-      els.favPill.textContent = `${favCount} favorito${favCount === 1 ? '' : 's'}`;
-      const q = normalize(els.search.value);
-      let filtered = [...items].sort((a,b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
-      if (showOnlyFavs) filtered = filtered.filter(i => i.favorite);
-      if (q) filtered = filtered.filter(i => normalize(`${i.term} ${i.translation} ${i.definition} ${i.example} ${i.notes}`).includes(q));
+      const query = normalizeSearch(els.search.value);
+      const favs = items.filter(i => i.favorite);
+      const ordered = [...items].sort((a, b) => {
+        if (a.favorite !== b.favorite) return a.favorite ? -1 : 1;
+        return (b.updatedAt || '').localeCompare(a.updatedAt || '');
+      });
+      const filtered = ordered.filter(item => {
+        if (!query) return true;
+        return normalizeSearch(`${item.term} ${item.ipa} ${item.translation} ${item.definition} ${item.example} ${item.note}`).includes(query);
+      });
+
+      els.count.textContent = `${items.length} saved${favs.length ? ` · ${favs.length} favorite${favs.length === 1 ? '' : 's'}` : ''}`;
+
       if (!filtered.length) {
-        els.list.innerHTML = `<div class="empty">Nenhum termo encontrado.</div>`;
+        els.list.innerHTML = `<div class="empty">No saved words yet.</div>`;
         return;
       }
+
       els.list.innerHTML = filtered.map(item => {
-        const definition = item.definition || 'Sem definição automática.';
-        const translation = item.translation || 'Sem tradução salva.';
-        const example = item.example || 'Sem exemplo salvo.';
-        const favLabel = item.favorite ? 'Remover dos favoritos' : 'Favoritar';
-        const needsGpt = isMissingField(item.definition) || isMissingField(item.example) || isMissingField(item.translation);
+        const links = itemLinks(item.term);
+        const detailsContent = [
+          item.definition ? `<div><div class="label">Definition</div><div class="value">${escapeHtml(item.definition)}</div></div>` : '',
+          item.example ? `<div><div class="label">Example</div><div class="value">${escapeHtml(item.example)}</div></div>` : '',
+          item.note ? `<div><div class="label">Note</div><div class="value">${escapeHtml(item.note)}</div></div>` : ''
+        ].filter(Boolean).join('');
+
         return `
-          <article class="word-item">
-            <div class="word-top">
-              <div class="word-main">
-                <div class="word-term">${escapeHtml(item.term)}</div>
-                <div class="word-definition">${escapeHtml(definition)}</div>
+          <article class="card">
+            <div class="card-top">
+              <div class="term-wrap">
+                <div class="term">${escapeHtml(item.term)}</div>
+                ${item.ipa ? `<div class="ipa">${escapeHtml(item.ipa)}</div>` : ''}
+                ${item.translation ? `<div class="translation">${escapeHtml(item.translation)}</div>` : ''}
               </div>
-              <div class="word-actions" aria-label="Ações do termo">
-                <button class="icon-btn ${item.favorite ? 'active' : ''}" data-action="favorite" data-id="${escapeAttr(item.id)}" title="${favLabel}" aria-label="${favLabel}">${item.favorite ? '★' : '☆'}</button>
-                <button class="icon-btn" data-action="speak" data-id="${escapeAttr(item.id)}" title="Ouvir" aria-label="Ouvir">🔊</button>
-                <button class="icon-btn" data-action="gpt" data-id="${escapeAttr(item.id)}" title="Enviar query ao GPT" aria-label="Enviar query ao GPT">🤖</button>
-                <button class="icon-btn" data-action="edit" data-id="${escapeAttr(item.id)}" title="Editar" aria-label="Editar">✏️</button>
-                <button class="icon-btn danger" data-action="delete" data-id="${escapeAttr(item.id)}" title="Apagar" aria-label="Apagar">🗑️</button>
+              <div class="icon-row" aria-label="Card actions">
+                <button class="icon-btn ${item.favorite ? 'active' : ''}" data-action="favorite" data-id="${escapeAttr(item.id)}" title="Favorite" aria-label="Favorite">${item.favorite ? '★' : '☆'}</button>
+                <button class="icon-btn" data-action="speak" data-id="${escapeAttr(item.id)}" title="Audio" aria-label="Audio">🔊</button>
+                <button class="icon-btn" data-action="edit" data-id="${escapeAttr(item.id)}" title="Edit" aria-label="Edit">✎</button>
+                <button class="icon-btn danger" data-action="delete" data-id="${escapeAttr(item.id)}" title="Delete" aria-label="Delete">×</button>
               </div>
             </div>
-
-            <div class="dropdowns">
-              <details class="word-details">
-                <summary>Tradução</summary>
-                <div class="details-body">${escapeHtml(translation)}</div>
+            ${detailsContent ? `
+              <details class="info">
+                <summary>Definition & examples</summary>
+                <div class="details-body">${detailsContent}</div>
               </details>
-              <details class="word-details">
-                <summary>Exemplo</summary>
-                <div class="details-body">${escapeHtml(example)}</div>
-              </details>
-            </div>
-
-            ${item.notes ? `<div class="notes"><strong>Obs:</strong> ${escapeHtml(item.notes)}</div>` : ''}
-
-            <div class="word-links">
-              <a class="word-link" href="${escapeAttr(itemLink(item, 'youglish'))}" target="_blank" rel="noopener">YouGlish</a>
-              <a class="word-link" href="${escapeAttr(itemLink(item, 'cambridge'))}" target="_blank" rel="noopener">Cambridge</a>
-              <a class="word-link" href="${escapeAttr(itemLink(item, 'longman'))}" target="_blank" rel="noopener">Longman</a>
-              ${needsGpt ? `<button class="word-link gpt" data-action="gpt" data-id="${escapeAttr(item.id)}">Pedir ao GPT</button>` : ''}
+            ` : ''}
+            <div class="links">
+              <a class="link-chip" href="${escapeAttr(links.youglish)}" target="_blank" rel="noopener">YouGlish</a>
+              <a class="link-chip" href="${escapeAttr(links.cambridge)}" target="_blank" rel="noopener">Cambridge</a>
+              <a class="link-chip" href="${escapeAttr(links.longman)}" target="_blank" rel="noopener">Longman</a>
             </div>
           </article>
         `;
@@ -846,89 +844,62 @@
     }
 
     function escapeHtml(str) {
-      return String(str || '').replace(/[&<>\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+      return String(str || '').replace(/[&<>\"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     }
-    function escapeAttr(str) {
-      return escapeHtml(str).replace(/'/g, '&#39;');
-    }
-
-    function readShareParams() {
-      const params = new URLSearchParams(location.search);
-      const shared = params.get('text') || params.get('title') || params.get('url') || '';
-      const clean = cleanSharedText(shared);
-      if (clean) {
-        els.term.value = clean;
-        setLinks(clean);
-        setStatus('Texto recebido pelo compartilhamento. Toque em <strong>Gerar</strong> ou salve após revisar.', 'ok');
-        history.replaceState(null, '', location.pathname);
-        if (els.autoGenerate.checked) setTimeout(generate, 300);
-      }
-    }
+    function escapeAttr(str) { return escapeHtml(str).replace(/'/g, '&#39;'); }
 
     function bindEvents() {
-      els.pasteBtn.addEventListener('click', pasteTerm);
-      els.generateBtn.addEventListener('click', generate);
-      els.speakBtn.addEventListener('click', () => speakTerm());
-      els.gptBtn.addEventListener('click', () => shareWithGPT(els.term.value));
-      els.gptLinkBtn.addEventListener('click', () => shareWithGPT(els.term.value));
-      els.saveBtn.addEventListener('click', saveItem);
-      els.clearBtn.addEventListener('click', resetForm);
-      els.term.addEventListener('input', () => setLinks(els.term.value));
-      els.term.addEventListener('paste', () => setTimeout(() => {
-        setLinks(els.term.value);
-        if (els.autoGenerate.checked) generate();
-      }, 80));
-      els.term.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') { e.preventDefault(); if (els.autoGenerate.checked) generate(); }
-      });
+      els.askGptBtn.addEventListener('click', askGptFromClipboard);
+      els.pasteResponseBtn.addEventListener('click', pasteGptResponse);
       els.search.addEventListener('input', render);
-      els.showAllBtn.addEventListener('click', () => { showOnlyFavs = false; render(); });
-      els.showFavBtn.addEventListener('click', () => { showOnlyFavs = true; render(); });
-      els.deleteAllBtn.addEventListener('click', () => {
-        if (!items.length) return toast('Nada para apagar.');
-        if (!confirm('Apagar todos os termos salvos?')) return;
-        items = [];
-        persist();
-        resetForm();
-      });
-      els.list.addEventListener('click', (e) => {
-        const target = e.target.closest('[data-action]');
-        if (!target) return;
-        const { action, id } = target.dataset;
+      els.list.addEventListener('click', (event) => {
+        const btn = event.target.closest('[data-action]');
+        if (!btn) return;
+        const { action, id } = btn.dataset;
         const item = items.find(i => i.id === id);
         if (action === 'favorite') toggleFavorite(id);
-        if (action === 'edit') editItem(id);
+        if (action === 'speak' && item) speak(item.term);
+        if (action === 'edit') openEdit(id);
         if (action === 'delete') deleteItem(id);
-        if (action === 'gpt' && item) shareWithGPT(item.term, item);
-        if (action === 'speak' && item) { audioUrl = item.audioUrl || ''; speakTerm(item.term); }
       });
+
+      els.closeEditBtn.addEventListener('click', closeEdit);
+      els.cancelEditBtn.addEventListener('click', closeEdit);
+      els.saveEditBtn.addEventListener('click', saveEdit);
+      els.editModal.addEventListener('click', (e) => { if (e.target === els.editModal) closeEdit(); });
+
+      els.closePasteBtn.addEventListener('click', closePasteModal);
+      els.cancelPasteBtn.addEventListener('click', closePasteModal);
+      els.savePasteBtn.addEventListener('click', saveManualPaste);
+      els.pasteModal.addEventListener('click', (e) => { if (e.target === els.pasteModal) closePasteModal(); });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') { closeEdit(); closePasteModal(); }
+      });
+
       window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredInstallPrompt = e;
-        els.installBtn.classList.remove('hidden');
+        els.installBtn.classList.add('visible');
       });
       els.installBtn.addEventListener('click', async () => {
         if (!deferredInstallPrompt) return;
         deferredInstallPrompt.prompt();
         await deferredInstallPrompt.userChoice;
         deferredInstallPrompt = null;
-        els.installBtn.classList.add('hidden');
+        els.installBtn.classList.remove('visible');
       });
     }
 
     async function registerServiceWorker() {
       if ('serviceWorker' in navigator) {
-        try {
-          const registration = await navigator.serviceWorker.register('sw.js');
-          if (registration.waiting) registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-        } catch (err) { console.warn('Service worker failed', err); }
+        try { await navigator.serviceWorker.register('./sw.js'); }
+        catch { /* App still works without offline cache. */ }
       }
     }
 
     bindEvents();
     loadItems();
-    setLinks('');
-    readShareParams();
     registerServiceWorker();
   </script>
 </body>

@@ -1,14 +1,13 @@
 {
   "name": "Words",
   "short_name": "Words",
-  "description": "App minimalista para salvar vocabulário em inglês com tradução, definição, exemplo, áudio e integração rápida com GPT.",
-  "start_url": "./",
+  "description": "A minimal vocabulary notebook for English learners.",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#fbfbfa",
-  "theme_color": "#fbfbfa",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "orientation": "portrait-primary",
-  "lang": "pt-BR",
   "icons": [
     {
       "src": "icon-192.png",
@@ -22,14 +21,5 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ],
-  "share_target": {
-    "action": "./",
-    "method": "GET",
-    "params": {
-      "title": "title",
-      "text": "text",
-      "url": "url"
-    }
-  }
+  ]
 }
