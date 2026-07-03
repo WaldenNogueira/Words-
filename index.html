@@ -204,44 +204,78 @@
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: var(--paper);
-      padding: 14px;
+      padding: 12px 13px;
       box-shadow: var(--shadow);
+      transition: background .16s ease, border-color .16s ease;
     }
+    .card:hover { border-color: var(--line-strong); }
 
-    .card-top {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-      align-items: start;
+    .card-term-line {
+      display: flex;
+      align-items: center;
+      min-height: 28px;
     }
-
-    .term-wrap { min-width: 0; }
+    .term-toggle {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      text-align: left;
+      padding: 0;
+      cursor: pointer;
+      font: inherit;
+    }
     .term {
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 680;
       letter-spacing: -0.018em;
-      line-height: 1.2;
+      line-height: 1.25;
       overflow-wrap: anywhere;
     }
+
+    .action-line {
+      margin-top: 7px;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .site-btn {
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .site-btn:hover { background: var(--soft-2); color: var(--text); }
+    .site-btn img {
+      width: 17px;
+      height: 17px;
+      border-radius: 4px;
+      display: block;
+    }
+    .site-btn span { display: none; }
+
     .ipa {
-      margin-top: 3px;
       color: var(--muted);
       font-size: 13.5px;
       letter-spacing: .01em;
     }
     .translation {
-      margin-top: 9px;
       color: var(--text);
       font-size: 14.5px;
       overflow-wrap: anywhere;
-    }
-
-    .icon-row {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-      justify-content: flex-end;
-      flex-wrap: nowrap;
     }
 
     .icon-btn {
@@ -262,33 +296,25 @@
     .icon-btn.active { color: var(--text); }
     .icon-btn.danger:hover { color: var(--danger); background: #fdf0ee; }
 
-    details.info {
+    .card-expanded {
       margin-top: 12px;
       border-top: 1px solid var(--line);
-      padding-top: 10px;
+      padding-top: 12px;
+      display: grid;
+      gap: 10px;
+      animation: expandIn .12s ease-out;
     }
-    details.info summary {
-      cursor: pointer;
+    @keyframes expandIn {
+      from { opacity: 0; transform: translateY(-2px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .expanded-title {
       color: var(--muted);
       font-size: 13px;
-      font-weight: 620;
-      list-style: none;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      user-select: none;
+      font-weight: 650;
+      letter-spacing: -0.005em;
     }
-    details.info summary::-webkit-details-marker { display: none; }
-    details.info summary::after {
-      content: "⌄";
-      color: var(--faint);
-      font-size: 16px;
-      transition: transform .16s ease;
-    }
-    details.info[open] summary::after { transform: rotate(180deg); }
-
     .details-body {
-      margin-top: 10px;
       display: grid;
       gap: 10px;
       color: var(--text);
@@ -414,9 +440,8 @@
       .actions { grid-template-columns: 1fr 1fr; gap: 8px; }
       .composer-head { display: block; }
       .btn { padding-inline: 10px; font-size: 14px; }
-      .card { padding: 13px; }
-      .card-top { grid-template-columns: 1fr; }
-      .icon-row { justify-content: flex-start; margin-left: -4px; }
+      .card { padding: 12px; }
+      .action-line { margin-left: -3px; }
       .modal-backdrop { align-items: flex-end; padding: 0; }
       .modal { border-radius: 18px 18px 0 0; max-height: 92vh; }
     }
@@ -498,6 +523,7 @@ Tradução do exemplo."></textarea></label>
     const $ = (id) => document.getElementById(id);
 
     let items = [];
+    const expandedIds = new Set();
     let editingId = null;
     let deferredInstallPrompt = null;
 
@@ -708,8 +734,7 @@ Tradução do exemplo."></textarea></label>
       const q = encodeURIComponent(term || 'english');
       return {
         youglish: `https://youglish.com/pronounce/${q}/english/us`,
-        cambridge: `https://dictionary.cambridge.org/dictionary/english/${q}`,
-        longman: `https://www.ldoceonline.com/dictionary/${q}`
+        reverso: `https://context.reverso.net/translation/english-portuguese/${q}`
       };
     }
 
@@ -724,6 +749,12 @@ Tradução do exemplo."></textarea></label>
       const voices = window.speechSynthesis.getVoices?.() || [];
       utterance.voice = voices.find(v => /en[-_]US/i.test(v.lang)) || voices.find(v => /^en/i.test(v.lang)) || null;
       window.speechSynthesis.speak(utterance);
+    }
+
+    function toggleExpanded(id) {
+      if (expandedIds.has(id)) expandedIds.delete(id);
+      else expandedIds.add(id);
+      render();
     }
 
     function toggleFavorite(id) {
@@ -812,32 +843,31 @@ Tradução do exemplo."></textarea></label>
           item.note ? `<div><div class="label">Note</div><div class="value">${escapeHtml(item.note)}</div></div>` : ''
         ].filter(Boolean).join('');
 
+        const isExpanded = expandedIds.has(item.id);
+        const expandedContent = isExpanded ? `
+          <div class="card-expanded">
+            ${item.ipa ? `<div class="ipa">${escapeHtml(item.ipa)}</div>` : ''}
+            ${item.translation ? `<div class="translation">${escapeHtml(item.translation)}</div>` : ''}
+            ${detailsContent ? `<div class="expanded-title">Definition & examples</div><div class="details-body">${detailsContent}</div>` : ''}
+          </div>
+        ` : '';
+
         return `
-          <article class="card">
-            <div class="card-top">
-              <div class="term-wrap">
+          <article class="card ${isExpanded ? 'is-expanded' : ''}">
+            <div class="card-term-line">
+              <button class="term-toggle" data-action="toggle" data-id="${escapeAttr(item.id)}" aria-expanded="${isExpanded ? 'true' : 'false'}" title="Open details">
                 <div class="term">${escapeHtml(item.term)}</div>
-                ${item.ipa ? `<div class="ipa">${escapeHtml(item.ipa)}</div>` : ''}
-                ${item.translation ? `<div class="translation">${escapeHtml(item.translation)}</div>` : ''}
-              </div>
-              <div class="icon-row" aria-label="Card actions">
-                <button class="icon-btn ${item.favorite ? 'active' : ''}" data-action="favorite" data-id="${escapeAttr(item.id)}" title="Favorite" aria-label="Favorite">${item.favorite ? '★' : '☆'}</button>
-                <button class="icon-btn" data-action="speak" data-id="${escapeAttr(item.id)}" title="Audio" aria-label="Audio">🔊</button>
-                <button class="icon-btn" data-action="edit" data-id="${escapeAttr(item.id)}" title="Edit" aria-label="Edit">✎</button>
-                <button class="icon-btn danger" data-action="delete" data-id="${escapeAttr(item.id)}" title="Delete" aria-label="Delete">×</button>
-              </div>
+              </button>
             </div>
-            ${detailsContent ? `
-              <details class="info">
-                <summary>Definition & examples</summary>
-                <div class="details-body">${detailsContent}</div>
-              </details>
-            ` : ''}
-            <div class="links">
-              <a class="link-chip" href="${escapeAttr(links.youglish)}" target="_blank" rel="noopener">YouGlish</a>
-              <a class="link-chip" href="${escapeAttr(links.cambridge)}" target="_blank" rel="noopener">Cambridge</a>
-              <a class="link-chip" href="${escapeAttr(links.longman)}" target="_blank" rel="noopener">Longman</a>
+            <div class="action-line" aria-label="Card actions">
+              <a class="site-btn" href="${escapeAttr(links.youglish)}" target="_blank" rel="noopener" title="YouGlish" aria-label="Open in YouGlish"><img src="https://youglish.com/favicon.ico" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='inline';"><span>YG</span></a>
+              <a class="site-btn" href="${escapeAttr(links.reverso)}" target="_blank" rel="noopener" title="Reverso Context" aria-label="Open in Reverso Context"><img src="https://www.reverso.net/favicon.ico" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='inline';"><span>RC</span></a>
+              <button class="icon-btn ${item.favorite ? 'active' : ''}" data-action="favorite" data-id="${escapeAttr(item.id)}" title="Favorite" aria-label="Favorite">${item.favorite ? '★' : '☆'}</button>
+              <button class="icon-btn" data-action="speak" data-id="${escapeAttr(item.id)}" title="Audio" aria-label="Audio">🔊</button>
+              <button class="icon-btn" data-action="edit" data-id="${escapeAttr(item.id)}" title="Edit" aria-label="Edit">✎</button>
+              <button class="icon-btn danger" data-action="delete" data-id="${escapeAttr(item.id)}" title="Delete" aria-label="Delete">×</button>
             </div>
+            ${expandedContent}
           </article>
         `;
       }).join('');
@@ -857,6 +887,7 @@ Tradução do exemplo."></textarea></label>
         if (!btn) return;
         const { action, id } = btn.dataset;
         const item = items.find(i => i.id === id);
+        if (action === 'toggle') toggleExpanded(id);
         if (action === 'favorite') toggleFavorite(id);
         if (action === 'speak' && item) speak(item.term);
         if (action === 'edit') openEdit(id);
