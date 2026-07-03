@@ -3,56 +3,691 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#101828" />
+  <meta name="theme-color" content="#111827" />
   <title>Words</title>
   <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
   <style>
-    :root{--bg:#0b1020;--card:#121a2f;--card2:#17213a;--text:#eef3ff;--muted:#9aa7c7;--line:#263250;--accent:#7cdbb7;--danger:#ff7b7b;--shadow:0 18px 40px rgba(0,0,0,.28);--r:22px}*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(circle at top,#17213a 0,#0b1020 48%,#070b16 100%);color:var(--text);min-height:100vh}.wrap{max-width:760px;margin:0 auto;padding:22px 16px 42px}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}.brand{display:flex;align-items:center;gap:12px}.logo{width:45px;height:45px;border-radius:15px;background:linear-gradient(135deg,var(--accent),#75a7ff);display:grid;place-items:center;font-weight:900;color:#08111f;box-shadow:var(--shadow)}h1{font-size:24px;margin:0}.sub{color:var(--muted);font-size:13px;margin-top:2px}.card{background:linear-gradient(180deg,var(--card),rgba(18,26,47,.88));border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px;margin-bottom:16px}label{display:block;color:var(--muted);font-size:13px;margin:12px 0 7px}input,textarea{width:100%;background:#0c1326;color:var(--text);border:1px solid #2a3658;border-radius:16px;padding:13px 14px;font-size:16px;outline:none}textarea{min-height:84px;resize:vertical}input:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,219,183,.12)}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}button,a.btn{border:0;border-radius:16px;padding:12px 14px;font-weight:750;font-size:14px;text-decoration:none;cursor:pointer;background:var(--card2);color:var(--text);border:1px solid #2a3658}button.primary{background:var(--accent);color:#07121e;border-color:transparent}button.ghost{background:transparent}button.danger{background:rgba(255,123,123,.1);border-color:rgba(255,123,123,.35);color:#ffd1d1}.hint{font-size:13px;color:var(--muted);line-height:1.45}.search{margin-bottom:12px}.list{display:grid;gap:12px}.item{background:rgba(18,26,47,.78);border:1px solid var(--line);border-radius:20px;padding:14px}.itemHead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.term{font-size:20px;font-weight:850}.translation{color:var(--accent);font-weight:750;margin-top:3px}.small{font-size:13px;color:var(--muted);line-height:1.4;margin-top:8px}.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.links a{font-size:13px;padding:9px 10px;border-radius:13px;background:#0c1326;color:var(--text);border:1px solid #2a3658;text-decoration:none}.iconBtn{padding:9px 11px;border-radius:13px}.empty{text-align:center;color:var(--muted);padding:28px 8px}.toast{position:fixed;left:16px;right:16px;bottom:18px;max-width:520px;margin:auto;background:#eef3ff;color:#07121e;border-radius:16px;padding:12px 14px;font-weight:750;box-shadow:var(--shadow);display:none}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px}.pill{font-size:12px;color:var(--muted);border:1px solid var(--line);padding:7px 10px;border-radius:999px}@media(max-width:560px){.row{grid-template-columns:1fr}.top{align-items:flex-start}.wrap{padding-top:16px}button,a.btn{width:auto}.actions button{flex:1}.links a{flex:1;text-align:center}}
+    :root {
+      --bg: #0b1020;
+      --card: rgba(255,255,255,.08);
+      --card-strong: rgba(255,255,255,.13);
+      --text: #f8fafc;
+      --muted: #aab4c3;
+      --line: rgba(255,255,255,.14);
+      --accent: #8b5cf6;
+      --accent-2: #22c55e;
+      --danger: #fb7185;
+      --warning: #fbbf24;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius: 22px;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 10% -10%, rgba(139,92,246,.45), transparent 32rem),
+        radial-gradient(circle at 90% 10%, rgba(34,197,94,.22), transparent 28rem),
+        linear-gradient(180deg, #0b1020 0%, #111827 100%);
+      color: var(--text);
+    }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; }
+    .app {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      padding: max(22px, env(safe-area-inset-top)) 16px max(36px, env(safe-area-inset-bottom));
+    }
+    .hero {
+      display: grid;
+      gap: 16px;
+      margin: 10px 0 18px;
+    }
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo {
+      width: 52px; height: 52px; border-radius: 16px;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--accent), #38bdf8);
+      box-shadow: var(--shadow);
+      font-weight: 900;
+      letter-spacing: -.04em;
+    }
+    h1 { margin: 0; font-size: clamp(2rem, 8vw, 4rem); line-height: .92; letter-spacing: -.07em; }
+    .subtitle { margin: 4px 0 0; color: var(--muted); font-size: .98rem; }
+    .grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr); gap: 16px; align-items: start; }
+    @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      overflow: hidden;
+    }
+    .card-inner { padding: 18px; }
+    .section-title {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      margin-bottom: 12px;
+    }
+    .section-title h2 { margin: 0; font-size: 1.05rem; letter-spacing: -.03em; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 1px solid var(--line); color: var(--muted);
+      background: rgba(255,255,255,.05); border-radius: 999px;
+      padding: 7px 10px; font-size: .78rem;
+    }
+    label { display: block; margin: 12px 0 7px; color: #d9e1ed; font-size: .88rem; font-weight: 700; }
+    input, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      color: var(--text);
+      background: rgba(4,10,24,.55);
+      outline: none;
+      padding: 13px 14px;
+      transition: border .2s, box-shadow .2s, background .2s;
+    }
+    textarea { min-height: 86px; resize: vertical; line-height: 1.45; }
+    input:focus, textarea:focus { border-color: rgba(139,92,246,.8); box-shadow: 0 0 0 4px rgba(139,92,246,.16); background: rgba(4,10,24,.78); }
+    .term-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: end; }
+    @media (max-width: 560px) { .term-row { grid-template-columns: 1fr; } }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 12px; }
+    .btn {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      padding: 11px 14px;
+      min-height: 44px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      text-decoration: none;
+      font-weight: 750;
+      transition: transform .12s ease, background .2s, border .2s, opacity .2s;
+      user-select: none;
+    }
+    .btn:hover { transform: translateY(-1px); background: rgba(255,255,255,.13); }
+    .btn:active { transform: translateY(0); }
+    .btn.primary { background: linear-gradient(135deg, var(--accent), #6366f1); border-color: transparent; }
+    .btn.good { background: linear-gradient(135deg, var(--accent-2), #14b8a6); border-color: transparent; color: #04100b; }
+    .btn.danger { border-color: rgba(251,113,133,.45); color: #fecdd3; }
+    .btn.small { min-height: 36px; padding: 8px 11px; font-size: .86rem; }
+    .btn.full { width: 100%; }
+    .btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
+    .status {
+      margin-top: 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      padding: 11px 12px;
+      font-size: .88rem;
+      min-height: 42px;
+    }
+    .status strong { color: var(--text); }
+    .links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+    @media (max-width: 520px) { .links { grid-template-columns: 1fr; } }
+    .links a { border-radius: 15px; padding: 11px 12px; text-align: center; background: rgba(255,255,255,.07); border: 1px solid var(--line); text-decoration: none; color: #dbeafe; font-weight: 800; }
+    .links a:hover { background: rgba(255,255,255,.12); }
+    .toolbar { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; margin-bottom: 12px; }
+    @media (max-width: 560px) { .toolbar { grid-template-columns: 1fr; } }
+    .list { display: grid; gap: 10px; }
+    .empty { color: var(--muted); border: 1px dashed var(--line); border-radius: 18px; padding: 18px; text-align: center; }
+    .word-item {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,.06);
+      padding: 13px;
+      display: grid;
+      gap: 8px;
+    }
+    .word-head { display: flex; align-items: start; justify-content: space-between; gap: 10px; }
+    .word-term { font-size: 1.05rem; font-weight: 900; letter-spacing: -.03em; }
+    .word-translation { color: #bbf7d0; font-weight: 750; }
+    .word-small { color: var(--muted); font-size: .88rem; line-height: 1.4; }
+    .item-actions { display: flex; flex-wrap: wrap; gap: 7px; }
+    .star { color: var(--warning); }
+    .hidden { display: none !important; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .split { grid-template-columns: 1fr; } }
+    .settings {
+      display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+      color: var(--muted); font-size: .86rem; margin-top: 12px;
+    }
+    .settings input { width: auto; accent-color: var(--accent); }
+    .file-input { display: none; }
+    .footer { color: var(--muted); font-size: .78rem; line-height: 1.45; margin-top: 14px; }
+    .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.25); border-top-color: white; border-radius: 50%; animation: spin .8s linear infinite; display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .toast {
+      position: fixed; left: 50%; bottom: max(18px, env(safe-area-inset-bottom)); transform: translateX(-50%) translateY(20px);
+      opacity: 0; pointer-events: none;
+      background: #f8fafc; color: #0f172a;
+      border-radius: 999px; padding: 11px 14px; font-weight: 850;
+      box-shadow: 0 16px 60px rgba(0,0,0,.35);
+      transition: opacity .2s, transform .2s;
+      z-index: 50; width: max-content; max-width: calc(100% - 32px);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header class="top">
-      <div class="brand"><div class="logo">W</div><div><h1>Words</h1><div class="sub">Seu vocabulário + YouGlish</div></div></div>
-      <span class="pill" id="count">0 termos</span>
-    </header>
-
-    <section class="card">
-      <div class="toolbar"><strong>Novo termo</strong><span class="hint">Copia → abre → cola</span></div>
-      <label>Termo em inglês</label>
-      <div class="row"><input id="term" placeholder="Ex: livelihood" autocomplete="off"><button id="pasteBtn" type="button">📋 Colar termo</button></div>
-      <label>Tradução em português</label><input id="translation" placeholder="Ex: sustento, meio de vida">
-      <label>Definição em inglês</label><textarea id="definition" placeholder="A way of earning money in order to live."></textarea>
-      <label>Exemplo em inglês</label><textarea id="example" placeholder="Teaching English became my main livelihood."></textarea>
-      <label>Observação pessoal</label><textarea id="note" placeholder="Onde vi essa palavra, contexto do filme, pronúncia, etc."></textarea>
-      <div class="actions"><button class="primary" id="saveBtn">Salvar</button><button id="autoBtn">Gerar links</button><button class="ghost" id="clearBtn">Limpar</button></div>
-      <p class="hint">A tradução/definição são editáveis. O app não usa servidor: tudo fica salvo no navegador do celular.</p>
+  <main class="app">
+    <section class="hero">
+      <div class="title-row">
+        <div class="brand">
+          <div class="logo">W</div>
+          <div>
+            <h1>Words</h1>
+            <p class="subtitle">Cole um termo em inglês, gere tradução, definição, exemplo, áudio e salve.</p>
+          </div>
+        </div>
+        <button id="installBtn" class="btn small hidden">📱 Instalar</button>
+      </div>
     </section>
 
-    <section class="card">
-      <div class="toolbar"><strong>Termos salvos</strong><button class="danger" id="exportBtn">Exportar backup</button></div>
-      <label>Buscar</label><input class="search" id="search" placeholder="Buscar por termo, tradução ou observação">
-      <div class="list" id="list"></div>
+    <section class="grid">
+      <div class="card">
+        <div class="card-inner">
+          <div class="section-title">
+            <h2>Novo termo</h2>
+            <span class="pill" id="countPill">0 salvos</span>
+          </div>
+
+          <div class="term-row">
+            <div>
+              <label for="term">Termo ou expressão</label>
+              <input id="term" autocomplete="off" placeholder="Ex.: make it out, livelihood, get rid of" />
+            </div>
+            <button id="pasteBtn" class="btn">📋 Colar</button>
+          </div>
+
+          <div class="btn-row">
+            <button id="generateBtn" class="btn primary">✨ Gerar</button>
+            <button id="speakBtn" class="btn">🔊 Áudio</button>
+            <button id="saveBtn" class="btn good">💾 Salvar</button>
+            <button id="clearBtn" class="btn">🧹 Limpar</button>
+          </div>
+
+          <div id="status" class="status">Pronto. Cole uma palavra e toque em <strong>Gerar</strong>.</div>
+
+          <div class="links">
+            <a id="youglishLink" href="#" target="_blank" rel="noopener">YouGlish</a>
+            <a id="cambridgeLink" href="#" target="_blank" rel="noopener">Cambridge</a>
+            <a id="longmanLink" href="#" target="_blank" rel="noopener">Longman</a>
+          </div>
+
+          <div class="split">
+            <div>
+              <label for="translation">Tradução PT-BR</label>
+              <textarea id="translation" placeholder="Preenchido automaticamente, mas editável"></textarea>
+            </div>
+            <div>
+              <label for="definition">Definição em inglês</label>
+              <textarea id="definition" placeholder="Preenchido automaticamente quando o dicionário encontrar"></textarea>
+            </div>
+          </div>
+
+          <label for="example">Exemplo em inglês</label>
+          <textarea id="example" placeholder="Exemplo de uso"></textarea>
+
+          <label for="notes">Minha observação</label>
+          <textarea id="notes" placeholder="Onde vi, dúvida, frase do filme, aula etc."></textarea>
+
+          <div class="settings">
+            <label><input id="autoGenerate" type="checkbox" checked /> gerar ao colar ou apertar Enter</label>
+            <label><input id="autoSpeak" type="checkbox" /> falar áudio depois de gerar</label>
+          </div>
+
+          <p class="footer">Tradução usa uma API gratuita sem chave; definição/exemplo usam um dicionário gratuito. Expressões e phrasal verbs podem precisar de ajuste manual.</p>
+        </div>
+      </div>
+
+      <aside class="card">
+        <div class="card-inner">
+          <div class="section-title">
+            <h2>Meus termos</h2>
+            <span class="pill" id="favPill">0 favoritos</span>
+          </div>
+
+          <div class="toolbar">
+            <input id="search" placeholder="Buscar salvos..." />
+            <button id="exportBtn" class="btn small">⬇️ Backup</button>
+            <button id="importBtn" class="btn small">⬆️ Importar</button>
+            <input id="importFile" class="file-input" type="file" accept="application/json,.json" />
+          </div>
+          <div class="btn-row" style="margin-top:0;margin-bottom:12px">
+            <button id="showAllBtn" class="btn small">Todos</button>
+            <button id="showFavBtn" class="btn small">⭐ Favoritos</button>
+            <button id="deleteAllBtn" class="btn small danger">Apagar tudo</button>
+          </div>
+
+          <div id="list" class="list"></div>
+        </div>
+      </aside>
     </section>
-  </div>
-  <div class="toast" id="toast"></div>
-<script>
-const $=id=>document.getElementById(id);const KEY='words_pwa_v1';let words=JSON.parse(localStorage.getItem(KEY)||'[]');let editing=null;
-function saveStore(){localStorage.setItem(KEY,JSON.stringify(words));render();}
-function toast(msg){$('toast').textContent=msg;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2200)}
-function clean(t){return (t||'').trim()}
-function urls(term){const q=encodeURIComponent(term);return {youglish:`https://youglish.com/pronounce/${q}/english/us`,cambridge:`https://dictionary.cambridge.org/dictionary/english/${q}`,longman:`https://www.ldoceonline.com/dictionary/${q}`}}
-function getForm(){return {id:editing||crypto.randomUUID(),term:clean($('term').value),translation:clean($('translation').value),definition:clean($('definition').value),example:clean($('example').value),note:clean($('note').value),fav:false}}
-function fill(w){editing=w.id;$('term').value=w.term;$('translation').value=w.translation||'';$('definition').value=w.definition||'';$('example').value=w.example||'';$('note').value=w.note||'';window.scrollTo({top:0,behavior:'smooth'})}
-function clearForm(){editing=null;['term','translation','definition','example','note'].forEach(id=>$(id).value='')}
-function render(){const q=clean($('search').value).toLowerCase();const list=[...words].sort((a,b)=>(b.fav-a.fav)||a.term.localeCompare(b.term)).filter(w=>[w.term,w.translation,w.definition,w.example,w.note].join(' ').toLowerCase().includes(q));$('count').textContent=`${words.length} termo${words.length===1?'':'s'}`;$('list').innerHTML=list.length?list.map(w=>{const u=urls(w.term);return `<article class="item"><div class="itemHead"><div><div class="term">${esc(w.term)}</div>${w.translation?`<div class="translation">${esc(w.translation)}</div>`:''}</div><button class="iconBtn" onclick="toggleFav('${w.id}')">${w.fav?'★':'☆'}</button></div>${w.definition?`<div class="small"><strong>Definition:</strong> ${esc(w.definition)}</div>`:''}${w.example?`<div class="small"><strong>Example:</strong> ${esc(w.example)}</div>`:''}${w.note?`<div class="small"><strong>Note:</strong> ${esc(w.note)}</div>`:''}<div class="links"><a target="_blank" href="${u.youglish}">YouGlish</a><a target="_blank" href="${u.cambridge}">Cambridge</a><a target="_blank" href="${u.longman}">Longman</a></div><div class="actions"><button onclick="editWord('${w.id}')">Editar</button><button class="danger" onclick="delWord('${w.id}')">Apagar</button></div></article>`}).join(''):'<div class="empty">Nenhum termo salvo ainda.</div>'}
-function esc(s){return (s||'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-window.editWord=id=>fill(words.find(w=>w.id===id));window.delWord=id=>{if(confirm('Apagar este termo?')){words=words.filter(w=>w.id!==id);saveStore();toast('Termo apagado')}};window.toggleFav=id=>{words=words.map(w=>w.id===id?{...w,fav:!w.fav}:w);saveStore()}
-$('saveBtn').onclick=()=>{const w=getForm();if(!w.term){toast('Digite um termo.');return}const old=words.find(x=>x.id===w.id);w.fav=old?.fav||false;words=old?words.map(x=>x.id===w.id?w:x):[w,...words];saveStore();clearForm();toast('Salvo!')}
-$('clearBtn').onclick=clearForm;$('autoBtn').onclick=()=>{const t=clean($('term').value);if(!t)return toast('Digite um termo primeiro.');window.open(urls(t).youglish,'_blank')}
-$('pasteBtn').onclick=async()=>{try{const text=await navigator.clipboard.readText();$('term').value=clean(text).split(/\s+/).slice(0,6).join(' ');toast('Termo colado')}catch(e){toast('Não consegui acessar a área de transferência. Cole manualmente.')}}
-$('search').oninput=render;$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(words,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='words-backup.json';a.click();URL.revokeObjectURL(a.href)}
-if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');render();
-</script>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const storeKey = 'words-pwa-v3-items';
+    let items = [];
+    let editingId = null;
+    let audioUrl = '';
+    let showOnlyFavs = false;
+    let deferredInstallPrompt = null;
+
+    const els = {
+      term: $('term'), translation: $('translation'), definition: $('definition'), example: $('example'), notes: $('notes'),
+      pasteBtn: $('pasteBtn'), generateBtn: $('generateBtn'), speakBtn: $('speakBtn'), saveBtn: $('saveBtn'), clearBtn: $('clearBtn'),
+      status: $('status'), youglishLink: $('youglishLink'), cambridgeLink: $('cambridgeLink'), longmanLink: $('longmanLink'),
+      search: $('search'), list: $('list'), countPill: $('countPill'), favPill: $('favPill'),
+      exportBtn: $('exportBtn'), importBtn: $('importBtn'), importFile: $('importFile'), showAllBtn: $('showAllBtn'), showFavBtn: $('showFavBtn'), deleteAllBtn: $('deleteAllBtn'),
+      autoGenerate: $('autoGenerate'), autoSpeak: $('autoSpeak'), installBtn: $('installBtn'), toast: $('toast')
+    };
+
+    function loadItems() {
+      try { items = JSON.parse(localStorage.getItem(storeKey) || '[]'); }
+      catch { items = []; }
+      render();
+    }
+
+    function persist() {
+      localStorage.setItem(storeKey, JSON.stringify(items));
+      render();
+    }
+
+    function toast(message) {
+      els.toast.textContent = message;
+      els.toast.classList.add('show');
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => els.toast.classList.remove('show'), 2300);
+    }
+
+    function setStatus(message, type = 'normal') {
+      const icon = type === 'loading' ? '<span class="spinner"></span>' : type === 'ok' ? '✅' : type === 'warn' ? '⚠️' : 'ℹ️';
+      els.status.innerHTML = `${icon} ${message}`;
+    }
+
+    function encodeTerm(term) { return encodeURIComponent(term.trim()); }
+
+    function setLinks(term) {
+      const q = encodeTerm(term || '');
+      const safe = q || 'english';
+      els.youglishLink.href = `https://youglish.com/pronounce/${safe}/english`;
+      els.cambridgeLink.href = `https://dictionary.cambridge.org/dictionary/english/${safe}`;
+      els.longmanLink.href = `https://www.ldoceonline.com/dictionary/${safe}`;
+    }
+
+    function resetForm() {
+      editingId = null;
+      audioUrl = '';
+      els.term.value = '';
+      els.translation.value = '';
+      els.definition.value = '';
+      els.example.value = '';
+      els.notes.value = '';
+      setLinks('');
+      setStatus('Pronto. Cole uma palavra e toque em <strong>Gerar</strong>.');
+      els.term.focus();
+    }
+
+    async function pasteTerm() {
+      try {
+        const text = await navigator.clipboard.readText();
+        const clean = cleanSharedText(text);
+        if (!clean) return toast('Nada copiado.');
+        els.term.value = clean;
+        setLinks(clean);
+        toast('Termo colado.');
+        if (els.autoGenerate.checked) generate();
+      } catch (err) {
+        toast('O navegador bloqueou o acesso à área de transferência. Cole manualmente.');
+      }
+    }
+
+    function cleanSharedText(text) {
+      return (text || '')
+        .replace(/https?:\/\/\S+/g, '')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, 140);
+    }
+
+    async function translateTerm(term) {
+      const url = `https://api.mymemory.translated.net/get?q=${encodeTerm(term)}&langpair=en|pt-BR`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('translation failed');
+      const data = await response.json();
+      const translated = data?.responseData?.translatedText || '';
+      if (!translated || translated.toLowerCase() === term.toLowerCase()) return '';
+      return translated.replace(/&quot;/g, '"').trim();
+    }
+
+    async function lookupDictionary(term) {
+      const normalized = term.trim().toLowerCase();
+      const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${encodeTerm(normalized)}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('dictionary not found');
+      const data = await response.json();
+      const entry = Array.isArray(data) ? data[0] : null;
+      if (!entry) return null;
+      let definition = '';
+      let example = '';
+      let partOfSpeech = '';
+      for (const meaning of entry.meanings || []) {
+        if (!partOfSpeech && meaning.partOfSpeech) partOfSpeech = meaning.partOfSpeech;
+        for (const def of meaning.definitions || []) {
+          if (!definition && def.definition) definition = def.definition;
+          if (!example && def.example) example = def.example;
+          if (definition && example) break;
+        }
+        if (definition && example) break;
+      }
+      let foundAudio = '';
+      for (const phonetic of entry.phonetics || []) {
+        if (phonetic.audio) { foundAudio = phonetic.audio; break; }
+      }
+      if (partOfSpeech && definition) definition = `${partOfSpeech}: ${definition}`;
+      return { definition, example, audio: foundAudio };
+    }
+
+    function fallbackExample(term) {
+      return `I heard “${term}” and wanted to understand how native speakers use it.`;
+    }
+
+    async function generate() {
+      const term = els.term.value.trim();
+      if (!term) return toast('Digite ou cole um termo primeiro.');
+      setLinks(term);
+      audioUrl = '';
+      setStatus('<strong>Gerando...</strong> Buscando tradução, definição e exemplo.', 'loading');
+      els.generateBtn.disabled = true;
+      let translated = '', dict = null, warnings = [];
+
+      try { translated = await translateTerm(term); }
+      catch (err) { warnings.push('tradução'); }
+
+      try { dict = await lookupDictionary(term); }
+      catch (err) { warnings.push('dicionário'); }
+
+      if (translated) els.translation.value = translated;
+      if (dict?.definition) els.definition.value = dict.definition;
+      if (dict?.example) els.example.value = dict.example;
+      if (dict?.audio) audioUrl = dict.audio;
+
+      if (!els.example.value.trim()) els.example.value = fallbackExample(term);
+      if (!els.definition.value.trim()) els.definition.value = 'Definition not found automatically. Use Cambridge/Longman and edit this field.';
+      if (!els.translation.value.trim()) els.translation.value = 'Tradução não encontrada automaticamente. Edite este campo.';
+
+      els.generateBtn.disabled = false;
+      if (warnings.length) setStatus(`Campos preenchidos com fallback. Pode revisar manualmente, principalmente expressões e phrasal verbs.`, 'warn');
+      else setStatus('Campos preenchidos. Revise e toque em <strong>Salvar</strong>.', 'ok');
+      if (els.autoSpeak.checked) speakTerm();
+    }
+
+    function speakTerm(textOverride) {
+      const term = textOverride || els.term.value.trim();
+      if (!term) return toast('Nada para ouvir.');
+      if (audioUrl) {
+        try {
+          const audio = new Audio(audioUrl);
+          audio.play().catch(() => speakWithBrowser(term));
+        } catch { speakWithBrowser(term); }
+      } else {
+        speakWithBrowser(term);
+      }
+    }
+
+    function speakWithBrowser(term) {
+      if (!('speechSynthesis' in window)) return toast('Áudio não disponível neste navegador.');
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(term);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.88;
+      const voices = window.speechSynthesis.getVoices();
+      const voice = voices.find(v => /en[-_]US/i.test(v.lang)) || voices.find(v => /^en/i.test(v.lang));
+      if (voice) utterance.voice = voice;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function getFormData() {
+      const term = els.term.value.trim();
+      if (!term) return null;
+      return {
+        id: editingId || crypto.randomUUID(),
+        term,
+        translation: els.translation.value.trim(),
+        definition: els.definition.value.trim(),
+        example: els.example.value.trim(),
+        notes: els.notes.value.trim(),
+        favorite: editingId ? (items.find(i => i.id === editingId)?.favorite || false) : false,
+        audioUrl,
+        links: {
+          youglish: els.youglishLink.href,
+          cambridge: els.cambridgeLink.href,
+          longman: els.longmanLink.href
+        },
+        updatedAt: new Date().toISOString()
+      };
+    }
+
+    function saveItem() {
+      const data = getFormData();
+      if (!data) return toast('Digite um termo antes de salvar.');
+      const existingIndex = items.findIndex(i => i.id === data.id);
+      const duplicateIndex = items.findIndex(i => i.term.toLowerCase() === data.term.toLowerCase() && i.id !== data.id);
+      if (duplicateIndex >= 0 && !confirm('Esse termo já existe. Deseja substituir o antigo?')) return;
+      if (duplicateIndex >= 0) items.splice(duplicateIndex, 1);
+      if (existingIndex >= 0) items[existingIndex] = data;
+      else items.unshift(data);
+      persist();
+      toast('Salvo.');
+      resetForm();
+    }
+
+    function editItem(id) {
+      const item = items.find(i => i.id === id);
+      if (!item) return;
+      editingId = id;
+      audioUrl = item.audioUrl || '';
+      els.term.value = item.term || '';
+      els.translation.value = item.translation || '';
+      els.definition.value = item.definition || '';
+      els.example.value = item.example || '';
+      els.notes.value = item.notes || '';
+      setLinks(item.term || '');
+      setStatus('Editando termo salvo. Faça as alterações e toque em <strong>Salvar</strong>.');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function deleteItem(id) {
+      const item = items.find(i => i.id === id);
+      if (!item) return;
+      if (!confirm(`Apagar “${item.term}”?`)) return;
+      items = items.filter(i => i.id !== id);
+      persist();
+      toast('Apagado.');
+    }
+
+    function toggleFavorite(id) {
+      const item = items.find(i => i.id === id);
+      if (!item) return;
+      item.favorite = !item.favorite;
+      persist();
+    }
+
+    function normalize(text) {
+      return (text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function render() {
+      els.countPill.textContent = `${items.length} salvo${items.length === 1 ? '' : 's'}`;
+      const favCount = items.filter(i => i.favorite).length;
+      els.favPill.textContent = `${favCount} favorito${favCount === 1 ? '' : 's'}`;
+      const q = normalize(els.search.value);
+      let filtered = [...items].sort((a,b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
+      if (showOnlyFavs) filtered = filtered.filter(i => i.favorite);
+      if (q) filtered = filtered.filter(i => normalize(`${i.term} ${i.translation} ${i.definition} ${i.example} ${i.notes}`).includes(q));
+      if (!filtered.length) {
+        els.list.innerHTML = `<div class="empty">Nenhum termo encontrado.</div>`;
+        return;
+      }
+      els.list.innerHTML = filtered.map(item => `
+        <article class="word-item">
+          <div class="word-head">
+            <div>
+              <div class="word-term">${escapeHtml(item.term)} ${item.favorite ? '<span class="star">★</span>' : ''}</div>
+              <div class="word-translation">${escapeHtml(item.translation || 'Sem tradução')}</div>
+            </div>
+            <button class="btn small" data-action="favorite" data-id="${item.id}">${item.favorite ? '★' : '☆'}</button>
+          </div>
+          ${item.definition ? `<div class="word-small"><strong>Def:</strong> ${escapeHtml(item.definition)}</div>` : ''}
+          ${item.example ? `<div class="word-small"><strong>Ex:</strong> ${escapeHtml(item.example)}</div>` : ''}
+          ${item.notes ? `<div class="word-small"><strong>Obs:</strong> ${escapeHtml(item.notes)}</div>` : ''}
+          <div class="item-actions">
+            <button class="btn small" data-action="speak" data-id="${item.id}">🔊</button>
+            <button class="btn small" data-action="edit" data-id="${item.id}">Editar</button>
+            <a class="btn small" href="${item.links?.youglish || `https://youglish.com/pronounce/${encodeTerm(item.term)}/english`}" target="_blank" rel="noopener">YouGlish</a>
+            <a class="btn small" href="${item.links?.cambridge || `https://dictionary.cambridge.org/dictionary/english/${encodeTerm(item.term)}`}" target="_blank" rel="noopener">Cambridge</a>
+            <button class="btn small danger" data-action="delete" data-id="${item.id}">Apagar</button>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    }
+
+    function exportBackup() {
+      const blob = new Blob([JSON.stringify({ app: 'Words', version: 3, exportedAt: new Date().toISOString(), items }, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `words-backup-${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      toast('Backup exportado.');
+    }
+
+    function importBackupFile(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          const incoming = Array.isArray(data) ? data : data.items;
+          if (!Array.isArray(incoming)) throw new Error('invalid');
+          const byTerm = new Map(items.map(i => [i.term.toLowerCase(), i]));
+          for (const item of incoming) {
+            if (!item.term) continue;
+            const clean = { ...item, id: item.id || crypto.randomUUID(), updatedAt: item.updatedAt || new Date().toISOString() };
+            byTerm.set(clean.term.toLowerCase(), clean);
+          }
+          items = Array.from(byTerm.values());
+          persist();
+          toast('Backup importado.');
+        } catch {
+          toast('Arquivo de backup inválido.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function readShareParams() {
+      const params = new URLSearchParams(location.search);
+      const shared = params.get('text') || params.get('title') || params.get('url') || '';
+      const clean = cleanSharedText(shared);
+      if (clean) {
+        els.term.value = clean;
+        setLinks(clean);
+        setStatus('Texto recebido pelo compartilhamento. Toque em <strong>Gerar</strong> ou salve após revisar.', 'ok');
+        history.replaceState(null, '', location.pathname);
+        if (els.autoGenerate.checked) setTimeout(generate, 300);
+      }
+    }
+
+    function bindEvents() {
+      els.pasteBtn.addEventListener('click', pasteTerm);
+      els.generateBtn.addEventListener('click', generate);
+      els.speakBtn.addEventListener('click', () => speakTerm());
+      els.saveBtn.addEventListener('click', saveItem);
+      els.clearBtn.addEventListener('click', resetForm);
+      els.term.addEventListener('input', () => setLinks(els.term.value));
+      els.term.addEventListener('paste', () => setTimeout(() => {
+        setLinks(els.term.value);
+        if (els.autoGenerate.checked) generate();
+      }, 80));
+      els.term.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); if (els.autoGenerate.checked) generate(); }
+      });
+      els.search.addEventListener('input', render);
+      els.exportBtn.addEventListener('click', exportBackup);
+      els.importBtn.addEventListener('click', () => els.importFile.click());
+      els.importFile.addEventListener('change', e => importBackupFile(e.target.files[0]));
+      els.showAllBtn.addEventListener('click', () => { showOnlyFavs = false; render(); });
+      els.showFavBtn.addEventListener('click', () => { showOnlyFavs = true; render(); });
+      els.deleteAllBtn.addEventListener('click', () => {
+        if (!items.length) return toast('Nada para apagar.');
+        if (!confirm('Apagar todos os termos salvos? Faça backup antes, se precisar.')) return;
+        items = [];
+        persist();
+        resetForm();
+      });
+      els.list.addEventListener('click', (e) => {
+        const target = e.target.closest('[data-action]');
+        if (!target) return;
+        const { action, id } = target.dataset;
+        if (action === 'favorite') toggleFavorite(id);
+        if (action === 'edit') editItem(id);
+        if (action === 'delete') deleteItem(id);
+        if (action === 'speak') {
+          const item = items.find(i => i.id === id);
+          if (item) { audioUrl = item.audioUrl || ''; speakTerm(item.term); }
+        }
+      });
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredInstallPrompt = e;
+        els.installBtn.classList.remove('hidden');
+      });
+      els.installBtn.addEventListener('click', async () => {
+        if (!deferredInstallPrompt) return;
+        deferredInstallPrompt.prompt();
+        await deferredInstallPrompt.userChoice;
+        deferredInstallPrompt = null;
+        els.installBtn.classList.add('hidden');
+      });
+    }
+
+    async function registerServiceWorker() {
+      if ('serviceWorker' in navigator) {
+        try {
+          const registration = await navigator.serviceWorker.register('sw.js');
+          if (registration.waiting) registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+        } catch (err) { console.warn('Service worker failed', err); }
+      }
+    }
+
+    bindEvents();
+    loadItems();
+    setLinks('');
+    readShareParams();
+    registerServiceWorker();
+  </script>
 </body>
 </html>
