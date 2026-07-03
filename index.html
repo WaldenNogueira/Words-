@@ -137,11 +137,11 @@
     .btn.primary:hover { background: #111; }
 
     .status {
-      min-height: 22px;
       margin-top: 12px;
       color: var(--muted);
       font-size: 13px;
     }
+    .status:empty { display: none; }
 
     .tools {
       display: flex;
@@ -411,9 +411,9 @@
 
     @media (max-width: 560px) {
       .app { padding: 24px 14px 40px; }
-      .actions { grid-template-columns: 1fr; }
+      .actions { grid-template-columns: 1fr 1fr; gap: 8px; }
       .composer-head { display: block; }
-      .hint { margin-top: 4px; }
+      .btn { padding-inline: 10px; font-size: 14px; }
       .card { padding: 13px; }
       .card-top { grid-template-columns: 1fr; }
       .icon-row { justify-content: flex-start; margin-left: -4px; }
@@ -432,13 +432,12 @@
     <section class="composer" aria-labelledby="new-entry-title">
       <div class="composer-head">
         <h2 id="new-entry-title" class="composer-title">New entry</h2>
-        <p class="hint">Copy a term → Ask GPT → copy the answer → Paste response.</p>
       </div>
       <div class="actions">
         <button id="askGptBtn" class="btn primary">🤖 Ask GPT</button>
         <button id="pasteResponseBtn" class="btn">📋 Paste response</button>
       </div>
-      <div id="status" class="status">Ready.</div>
+      <div id="status" class="status"></div>
     </section>
 
     <div class="tools">
@@ -466,7 +465,8 @@
         <label class="field"><span>IPA</span><input id="editIpa" class="field-input" placeholder="/ˈlɪvliˌhʊd/" /></label>
         <label class="field"><span>Translation</span><textarea id="editTranslation" class="field-input"></textarea></label>
         <label class="field"><span>Definition</span><textarea id="editDefinition" class="field-input"></textarea></label>
-        <label class="field"><span>Example</span><textarea id="editExample" class="field-input"></textarea></label>
+        <label class="field"><span>Example</span><textarea id="editExample" class="field-input" placeholder="English example.
+Tradução do exemplo."></textarea></label>
         <label class="field"><span>Note</span><textarea id="editNote" class="field-input"></textarea></label>
       </div>
       <div class="modal-actions">
@@ -484,7 +484,7 @@
       </div>
       <label class="field">
         <span>Response text</span>
-        <textarea id="manualPasteText" class="field-input long" placeholder="TERM:&#10;...&#10;&#10;IPA:&#10;...&#10;&#10;TRANSLATION:&#10;..."></textarea>
+        <textarea id="manualPasteText" class="field-input long" placeholder="TERM:&#10;...&#10;&#10;IPA:&#10;/.../&#10;&#10;TRANSLATION:&#10;...&#10;&#10;DEFINITION:&#10;...&#10;&#10;EXAMPLE:&#10;English example.&#10;Tradução do exemplo.&#10;&#10;NOTE:&#10;Nota em português."></textarea>
       </label>
       <div class="modal-actions">
         <button id="cancelPasteBtn" class="btn">Cancel</button>
@@ -587,7 +587,7 @@
     }
 
     function buildGptPrompt(term) {
-      return `Create one English vocabulary card for a Brazilian Portuguese speaker.\n\nTERM:\n${term}\n\nRequirements:\n- Use natural American English.\n- If the term is an expression, explain the expression as a whole.\n- IPA must be American English pronunciation.\n- Translation must be in Brazilian Portuguese.\n- Definition must be simple, natural English.\n- Example must sound like something an American would actually say.\n- Note should be short and practical.\n\nReturn ONLY this exact format. Do not add markdown, bullets, or extra explanation.\n\nTERM:\n${term}\n\nIPA:\n/.../\n\nTRANSLATION:\n...\n\nDEFINITION:\n...\n\nEXAMPLE:\n...\n\nNOTE:\n...`;
+      return `Create one English vocabulary card for a Brazilian Portuguese speaker.\n\nTERM:\n${term}\n\nRequirements:\n- Use natural American English.\n- If the term is an expression, explain the expression as a whole.\n- IPA must be American English pronunciation.\n- Translation must be in Brazilian Portuguese.\n- Definition must be simple, natural English.\n- Example must sound like something an American would actually say.\n- Put the Brazilian Portuguese translation of the example directly below the English example, inside the EXAMPLE field.\n- Note must be in Brazilian Portuguese and include practical usage tips, common situations, nuance, and any important warning such as formal/informal use, phrasal verb, idiom, false cognate, or pronunciation if relevant.\n\nReturn ONLY this exact format. Do not add markdown, bullets, or extra explanation.\n\nTERM:\n${term}\n\nIPA:\n/.../\n\nTRANSLATION:\n...\n\nDEFINITION:\n...\n\nEXAMPLE:\nEnglish example sentence.\nTradução natural em português do exemplo.\n\nNOTE:\nNota em português com dicas de uso.`;
     }
 
     async function askGptFromClipboard() {

@@ -1,4 +1,4 @@
-# Words PWA v6
+# Words PWA v7
 
 A minimal vocabulary notebook for English learners.
 
@@ -15,7 +15,7 @@ TERM:
 ...
 
 IPA:
-...
+/.../
 
 TRANSLATION:
 ...
@@ -24,7 +24,8 @@ DEFINITION:
 ...
 
 EXAMPLE:
-...
+English example.
+Tradução natural em português do exemplo.
 
 NOTE:
-...
+Nota em português com dicas de uso.
