@@ -3,201 +3,307 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#111827" />
+  <meta name="theme-color" content="#f7f4ee" />
   <title>Words</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <style>
     :root {
-      --bg: #0b1020;
-      --card: rgba(255,255,255,.08);
-      --card-strong: rgba(255,255,255,.13);
-      --text: #f8fafc;
-      --muted: #aab4c3;
-      --line: rgba(255,255,255,.14);
-      --accent: #8b5cf6;
-      --accent-2: #22c55e;
-      --danger: #fb7185;
-      --warning: #fbbf24;
-      --shadow: 0 20px 60px rgba(0,0,0,.35);
-      --radius: 22px;
-      color-scheme: dark;
+      --bg: #f7f4ee;
+      --surface: #fffdf9;
+      --surface-2: #f1eee7;
+      --ink: #191814;
+      --muted: #736d63;
+      --soft: #9d9588;
+      --line: #e4ded3;
+      --line-strong: #d6ccbd;
+      --accent: #191814;
+      --accent-soft: #efe7dc;
+      --success: #e2f7ec;
+      --success-ink: #064e3b;
+      --danger: #b42318;
+      --danger-soft: #fff0ed;
+      --warning: #c47f11;
+      --shadow: 0 16px 48px rgba(42, 35, 25, .08);
+      --shadow-soft: 0 10px 30px rgba(42, 35, 25, .05);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      color-scheme: light;
     }
+
     * { box-sizing: border-box; }
     html, body { min-height: 100%; }
     body {
       margin: 0;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
-        radial-gradient(circle at 10% -10%, rgba(139,92,246,.45), transparent 32rem),
-        radial-gradient(circle at 90% 10%, rgba(34,197,94,.22), transparent 28rem),
-        linear-gradient(180deg, #0b1020 0%, #111827 100%);
-      color: var(--text);
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,.95), transparent 28rem),
+        radial-gradient(circle at 100% 0%, rgba(239,231,220,.82), transparent 25rem),
+        var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
+
     button, input, textarea { font: inherit; }
-    button { cursor: pointer; }
+    button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
     a { color: inherit; }
+
     .app {
       width: min(1120px, 100%);
       margin: 0 auto;
-      padding: max(22px, env(safe-area-inset-top)) 16px max(36px, env(safe-area-inset-bottom));
+      padding: max(22px, env(safe-area-inset-top)) 16px max(44px, env(safe-area-inset-bottom));
     }
+
     .hero {
-      display: grid;
-      gap: 16px;
-      margin: 10px 0 18px;
-    }
-    .title-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 14px;
+      margin: 6px 0 18px;
     }
-    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
     .logo {
-      width: 52px; height: 52px; border-radius: 16px;
+      width: 48px; height: 48px; border-radius: 18px;
       display: grid; place-items: center;
-      background: linear-gradient(135deg, var(--accent), #38bdf8);
-      box-shadow: var(--shadow);
+      background: var(--ink);
+      color: #fffaf1;
+      box-shadow: var(--shadow-soft);
       font-weight: 900;
       letter-spacing: -.04em;
+      flex: 0 0 auto;
     }
-    h1 { margin: 0; font-size: clamp(2rem, 8vw, 4rem); line-height: .92; letter-spacing: -.07em; }
-    .subtitle { margin: 4px 0 0; color: var(--muted); font-size: .98rem; }
-    .grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr); gap: 16px; align-items: start; }
-    @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
+    h1 { margin: 0; font-size: clamp(2.15rem, 8vw, 4.1rem); line-height: .92; letter-spacing: -.075em; }
+    .subtitle { margin: 5px 0 0; color: var(--muted); font-size: .98rem; line-height: 1.35; max-width: 62ch; }
+
+    .grid { display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(330px, .98fr); gap: 16px; align-items: start; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+
+    .panel {
+      background: rgba(255,253,249,.84);
+      border: 1px solid rgba(228,222,211,.85);
+      border-radius: var(--radius-xl);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(16px);
       overflow: hidden;
+      backdrop-filter: blur(18px);
     }
-    .card-inner { padding: 18px; }
+    .panel-inner { padding: 18px; }
     .section-title {
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
       margin-bottom: 12px;
     }
-    .section-title h2 { margin: 0; font-size: 1.05rem; letter-spacing: -.03em; }
+    .section-title h2 { margin: 0; font-size: 1.08rem; letter-spacing: -.035em; }
     .pill {
       display: inline-flex; align-items: center; gap: 6px;
       border: 1px solid var(--line); color: var(--muted);
-      background: rgba(255,255,255,.05); border-radius: 999px;
-      padding: 7px 10px; font-size: .78rem;
+      background: rgba(255,255,255,.65); border-radius: 999px;
+      padding: 7px 10px; font-size: .78rem; font-weight: 750;
+      white-space: nowrap;
     }
-    label { display: block; margin: 12px 0 7px; color: #d9e1ed; font-size: .88rem; font-weight: 700; }
+
+    label { display: block; margin: 12px 0 7px; color: #302d27; font-size: .86rem; font-weight: 800; }
     input, textarea {
       width: 100%;
       border: 1px solid var(--line);
-      border-radius: 16px;
-      color: var(--text);
-      background: rgba(4,10,24,.55);
+      border-radius: var(--radius-md);
+      color: var(--ink);
+      background: rgba(255,255,255,.72);
       outline: none;
       padding: 13px 14px;
-      transition: border .2s, box-shadow .2s, background .2s;
+      transition: border .16s ease, box-shadow .16s ease, background .16s ease;
     }
-    textarea { min-height: 86px; resize: vertical; line-height: 1.45; }
-    input:focus, textarea:focus { border-color: rgba(139,92,246,.8); box-shadow: 0 0 0 4px rgba(139,92,246,.16); background: rgba(4,10,24,.78); }
+    textarea { min-height: 78px; resize: vertical; line-height: 1.45; }
+    input::placeholder, textarea::placeholder { color: #aaa297; }
+    input:focus, textarea:focus { border-color: #34312b; box-shadow: 0 0 0 4px rgba(25,24,20,.08); background: #fff; }
+
     .term-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: end; }
     @media (max-width: 560px) { .term-row { grid-template-columns: 1fr; } }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .split { grid-template-columns: 1fr; } }
+
     .btn-row { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 12px; }
     .btn {
       border: 1px solid var(--line);
       border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      color: var(--text);
+      background: #fffdf9;
+      color: var(--ink);
       padding: 11px 14px;
       min-height: 44px;
       display: inline-flex; align-items: center; justify-content: center; gap: 7px;
       text-decoration: none;
-      font-weight: 750;
-      transition: transform .12s ease, background .2s, border .2s, opacity .2s;
+      font-weight: 820;
+      transition: transform .12s ease, background .18s ease, border .18s ease, opacity .18s ease;
       user-select: none;
     }
-    .btn:hover { transform: translateY(-1px); background: rgba(255,255,255,.13); }
+    .btn:hover { transform: translateY(-1px); background: #fff; border-color: var(--line-strong); }
     .btn:active { transform: translateY(0); }
-    .btn.primary { background: linear-gradient(135deg, var(--accent), #6366f1); border-color: transparent; }
-    .btn.good { background: linear-gradient(135deg, var(--accent-2), #14b8a6); border-color: transparent; color: #04100b; }
-    .btn.danger { border-color: rgba(251,113,133,.45); color: #fecdd3; }
-    .btn.small { min-height: 36px; padding: 8px 11px; font-size: .86rem; }
-    .btn.full { width: 100%; }
+    .btn.primary { background: var(--ink); color: #fffaf1; border-color: var(--ink); }
+    .btn.good { background: var(--success); border-color: #bee7d0; color: var(--success-ink); }
+    .btn.danger { border-color: #ffd0c9; color: var(--danger); background: var(--danger-soft); }
+    .btn.small { min-height: 38px; padding: 8px 11px; font-size: .86rem; }
     .btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
+
+    .icon-btn {
+      width: 42px; height: 42px; min-width: 42px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.78);
+      color: var(--ink);
+      display: inline-grid; place-items: center;
+      line-height: 1;
+      font-size: 1rem;
+      transition: transform .12s ease, background .18s ease, border .18s ease;
+    }
+    .icon-btn:hover { transform: translateY(-1px); background: #fff; border-color: var(--line-strong); }
+    .icon-btn.active { color: var(--warning); background: #fff8e6; border-color: #f3d69a; }
+    .icon-btn.danger { color: var(--danger); background: var(--danger-soft); border-color: #ffd0c9; }
+    .icon-btn:focus-visible, .btn:focus-visible { outline: 3px solid rgba(25,24,20,.18); outline-offset: 2px; }
+
     .status {
       margin-top: 12px;
-      border-radius: 14px;
+      border-radius: var(--radius-md);
       border: 1px solid var(--line);
-      background: rgba(255,255,255,.06);
+      background: rgba(255,255,255,.58);
       color: var(--muted);
       padding: 11px 12px;
       font-size: .88rem;
       min-height: 42px;
+      line-height: 1.35;
     }
-    .status strong { color: var(--text); }
+    .status strong { color: var(--ink); }
+
     .links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
     @media (max-width: 520px) { .links { grid-template-columns: 1fr; } }
-    .links a { border-radius: 15px; padding: 11px 12px; text-align: center; background: rgba(255,255,255,.07); border: 1px solid var(--line); text-decoration: none; color: #dbeafe; font-weight: 800; }
-    .links a:hover { background: rgba(255,255,255,.12); }
+    .links a { border-radius: 15px; padding: 11px 12px; text-align: center; background: #fffdf9; border: 1px solid var(--line); text-decoration: none; color: #34312b; font-weight: 820; }
+    .links a:hover { background: #fff; border-color: var(--line-strong); }
+
     .toolbar { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; margin-bottom: 12px; }
     @media (max-width: 560px) { .toolbar { grid-template-columns: 1fr; } }
+    .filters { margin-top:0; margin-bottom:12px; }
+
     .list { display: grid; gap: 10px; }
-    .empty { color: var(--muted); border: 1px dashed var(--line); border-radius: 18px; padding: 18px; text-align: center; }
+    .empty { color: var(--muted); border: 1px dashed var(--line-strong); border-radius: 20px; padding: 22px 18px; text-align: center; background: rgba(255,255,255,.45); }
+
     .word-item {
       border: 1px solid var(--line);
-      border-radius: 18px;
-      background: rgba(255,255,255,.06);
-      padding: 13px;
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,.68);
+      box-shadow: 0 8px 24px rgba(42, 35, 25, .035);
+      padding: 12px;
       display: grid;
-      gap: 8px;
+      gap: 10px;
+      transition: transform .16s ease, border .16s ease, background .16s ease;
     }
-    .word-head { display: flex; align-items: start; justify-content: space-between; gap: 10px; }
-    .word-term { font-size: 1.05rem; font-weight: 900; letter-spacing: -.03em; }
-    .word-translation { color: #bbf7d0; font-weight: 750; }
-    .word-small { color: var(--muted); font-size: .88rem; line-height: 1.4; }
-    .item-actions { display: flex; flex-wrap: wrap; gap: 7px; }
-    .star { color: var(--warning); }
-    .hidden { display: none !important; }
-    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    @media (max-width: 640px) { .split { grid-template-columns: 1fr; } }
+    .word-item:hover { transform: translateY(-1px); border-color: var(--line-strong); background: #fffdf9; }
+    .word-top { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: start; }
+    .word-main { min-width: 0; }
+    .word-term { font-size: 1.08rem; font-weight: 930; letter-spacing: -.035em; overflow-wrap: anywhere; }
+    .word-definition { color: var(--muted); font-size: .88rem; line-height: 1.42; margin-top: 4px; }
+    .word-actions { display: flex; gap: 6px; align-items: center; flex-wrap: nowrap; }
+    @media (max-width: 460px) {
+      .word-top { grid-template-columns: 1fr; }
+      .word-actions { justify-content: flex-start; }
+    }
+
+    .dropdowns { display: grid; gap: 7px; }
+    .word-details {
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: rgba(247,244,238,.72);
+      overflow: hidden;
+    }
+    .word-details summary {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 42px;
+      padding: 10px 12px;
+      font-weight: 850;
+      color: #353029;
+      cursor: pointer;
+      user-select: none;
+    }
+    .word-details summary::-webkit-details-marker { display: none; }
+    .word-details summary::after {
+      content: "⌄";
+      width: 24px; height: 24px;
+      display: inline-grid; place-items: center;
+      border-radius: 999px;
+      background: rgba(255,255,255,.8);
+      color: var(--muted);
+      transition: transform .16s ease;
+      flex: 0 0 auto;
+    }
+    .word-details[open] summary::after { transform: rotate(180deg); }
+    .details-body {
+      border-top: 1px solid var(--line);
+      padding: 11px 12px 12px;
+      color: #454039;
+      line-height: 1.46;
+      font-size: .92rem;
+      overflow-wrap: anywhere;
+    }
+
+    .word-links { display: flex; flex-wrap: wrap; gap: 7px; }
+    .word-link {
+      display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+      min-height: 34px;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.7);
+      text-decoration: none;
+      font-size: .82rem;
+      font-weight: 820;
+      color: #4b463e;
+    }
+    .word-link:hover { background: #fff; border-color: var(--line-strong); }
+    .notes { color: var(--muted); font-size: .86rem; line-height: 1.42; border-left: 3px solid var(--line-strong); padding-left: 9px; }
+
     .settings {
-      display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+      display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center;
       color: var(--muted); font-size: .86rem; margin-top: 12px;
     }
-    .settings input { width: auto; accent-color: var(--accent); }
+    .settings label { display:flex; align-items:center; gap:7px; margin:0; color: var(--muted); font-weight: 720; }
+    .settings input { width: auto; accent-color: var(--ink); }
     .file-input { display: none; }
     .footer { color: var(--muted); font-size: .78rem; line-height: 1.45; margin-top: 14px; }
-    .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.25); border-top-color: white; border-radius: 50%; animation: spin .8s linear infinite; display: inline-block; }
+    .spinner { width: 16px; height: 16px; border: 2px solid rgba(25,24,20,.22); border-top-color: var(--ink); border-radius: 50%; animation: spin .8s linear infinite; display: inline-block; vertical-align: -3px; }
     @keyframes spin { to { transform: rotate(360deg); } }
+
     .toast {
       position: fixed; left: 50%; bottom: max(18px, env(safe-area-inset-bottom)); transform: translateX(-50%) translateY(20px);
       opacity: 0; pointer-events: none;
-      background: #f8fafc; color: #0f172a;
+      background: var(--ink); color: #fffaf1;
       border-radius: 999px; padding: 11px 14px; font-weight: 850;
-      box-shadow: 0 16px 60px rgba(0,0,0,.35);
+      box-shadow: 0 16px 60px rgba(0,0,0,.25);
       transition: opacity .2s, transform .2s;
       z-index: 50; width: max-content; max-width: calc(100% - 32px);
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
   <main class="app">
     <section class="hero">
-      <div class="title-row">
-        <div class="brand">
-          <div class="logo">W</div>
-          <div>
-            <h1>Words</h1>
-            <p class="subtitle">Cole um termo em inglês, gere tradução, definição, exemplo, áudio e salve.</p>
-          </div>
+      <div class="brand">
+        <div class="logo">W</div>
+        <div>
+          <h1>Words</h1>
+          <p class="subtitle">Cole um termo em inglês, gere tradução, definição, exemplo, áudio e salve.</p>
         </div>
-        <button id="installBtn" class="btn small hidden">📱 Instalar</button>
       </div>
+      <button id="installBtn" class="btn small hidden">📱 Instalar</button>
     </section>
 
     <section class="grid">
-      <div class="card">
-        <div class="card-inner">
+      <div class="panel">
+        <div class="panel-inner">
           <div class="section-title">
             <h2>Novo termo</h2>
             <span class="pill" id="countPill">0 salvos</span>
@@ -252,8 +358,8 @@
         </div>
       </div>
 
-      <aside class="card">
-        <div class="card-inner">
+      <aside class="panel">
+        <div class="panel-inner">
           <div class="section-title">
             <h2>Meus termos</h2>
             <span class="pill" id="favPill">0 favoritos</span>
@@ -265,7 +371,7 @@
             <button id="importBtn" class="btn small">⬆️ Importar</button>
             <input id="importFile" class="file-input" type="file" accept="application/json,.json" />
           </div>
-          <div class="btn-row" style="margin-top:0;margin-bottom:12px">
+          <div class="btn-row filters">
             <button id="showAllBtn" class="btn small">Todos</button>
             <button id="showFavBtn" class="btn small">⭐ Favoritos</button>
             <button id="deleteAllBtn" class="btn small danger">Apagar tudo</button>
@@ -320,7 +426,7 @@
       els.status.innerHTML = `${icon} ${message}`;
     }
 
-    function encodeTerm(term) { return encodeURIComponent(term.trim()); }
+    function encodeTerm(term) { return encodeURIComponent((term || '').trim()); }
 
     function setLinks(term) {
       const q = encodeTerm(term || '');
@@ -432,7 +538,7 @@
       if (!els.translation.value.trim()) els.translation.value = 'Tradução não encontrada automaticamente. Edite este campo.';
 
       els.generateBtn.disabled = false;
-      if (warnings.length) setStatus(`Campos preenchidos com fallback. Pode revisar manualmente, principalmente expressões e phrasal verbs.`, 'warn');
+      if (warnings.length) setStatus('Campos preenchidos com fallback. Pode revisar manualmente, principalmente expressões e phrasal verbs.', 'warn');
       else setStatus('Campos preenchidos. Revise e toque em <strong>Salvar</strong>.', 'ok');
       if (els.autoSpeak.checked) speakTerm();
     }
@@ -532,6 +638,14 @@
       return (text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
 
+    function itemLink(item, type) {
+      const term = encodeTerm(item.term);
+      if (type === 'youglish') return item.links?.youglish || `https://youglish.com/pronounce/${term}/english`;
+      if (type === 'cambridge') return item.links?.cambridge || `https://dictionary.cambridge.org/dictionary/english/${term}`;
+      if (type === 'longman') return item.links?.longman || `https://www.ldoceonline.com/dictionary/${term}`;
+      return '#';
+    }
+
     function render() {
       els.countPill.textContent = `${items.length} salvo${items.length === 1 ? '' : 's'}`;
       const favCount = items.filter(i => i.favorite).length;
@@ -544,35 +658,58 @@
         els.list.innerHTML = `<div class="empty">Nenhum termo encontrado.</div>`;
         return;
       }
-      els.list.innerHTML = filtered.map(item => `
-        <article class="word-item">
-          <div class="word-head">
-            <div>
-              <div class="word-term">${escapeHtml(item.term)} ${item.favorite ? '<span class="star">★</span>' : ''}</div>
-              <div class="word-translation">${escapeHtml(item.translation || 'Sem tradução')}</div>
+      els.list.innerHTML = filtered.map(item => {
+        const definition = item.definition || 'Sem definição automática.';
+        const translation = item.translation || 'Sem tradução salva.';
+        const example = item.example || 'Sem exemplo salvo.';
+        const favLabel = item.favorite ? 'Remover dos favoritos' : 'Favoritar';
+        return `
+          <article class="word-item">
+            <div class="word-top">
+              <div class="word-main">
+                <div class="word-term">${escapeHtml(item.term)}</div>
+                <div class="word-definition">${escapeHtml(definition)}</div>
+              </div>
+              <div class="word-actions" aria-label="Ações do termo">
+                <button class="icon-btn ${item.favorite ? 'active' : ''}" data-action="favorite" data-id="${escapeAttr(item.id)}" title="${favLabel}" aria-label="${favLabel}">${item.favorite ? '★' : '☆'}</button>
+                <button class="icon-btn" data-action="speak" data-id="${escapeAttr(item.id)}" title="Ouvir" aria-label="Ouvir">🔊</button>
+                <button class="icon-btn" data-action="edit" data-id="${escapeAttr(item.id)}" title="Editar" aria-label="Editar">✏️</button>
+                <button class="icon-btn danger" data-action="delete" data-id="${escapeAttr(item.id)}" title="Apagar" aria-label="Apagar">🗑️</button>
+              </div>
             </div>
-            <button class="btn small" data-action="favorite" data-id="${item.id}">${item.favorite ? '★' : '☆'}</button>
-          </div>
-          ${item.definition ? `<div class="word-small"><strong>Def:</strong> ${escapeHtml(item.definition)}</div>` : ''}
-          ${item.example ? `<div class="word-small"><strong>Ex:</strong> ${escapeHtml(item.example)}</div>` : ''}
-          ${item.notes ? `<div class="word-small"><strong>Obs:</strong> ${escapeHtml(item.notes)}</div>` : ''}
-          <div class="item-actions">
-            <button class="btn small" data-action="speak" data-id="${item.id}">🔊</button>
-            <button class="btn small" data-action="edit" data-id="${item.id}">Editar</button>
-            <a class="btn small" href="${item.links?.youglish || `https://youglish.com/pronounce/${encodeTerm(item.term)}/english`}" target="_blank" rel="noopener">YouGlish</a>
-            <a class="btn small" href="${item.links?.cambridge || `https://dictionary.cambridge.org/dictionary/english/${encodeTerm(item.term)}`}" target="_blank" rel="noopener">Cambridge</a>
-            <button class="btn small danger" data-action="delete" data-id="${item.id}">Apagar</button>
-          </div>
-        </article>
-      `).join('');
+
+            <div class="dropdowns">
+              <details class="word-details">
+                <summary>🇧🇷 Tradução</summary>
+                <div class="details-body">${escapeHtml(translation)}</div>
+              </details>
+              <details class="word-details">
+                <summary>💬 Exemplo</summary>
+                <div class="details-body">${escapeHtml(example)}</div>
+              </details>
+            </div>
+
+            ${item.notes ? `<div class="notes"><strong>Obs:</strong> ${escapeHtml(item.notes)}</div>` : ''}
+
+            <div class="word-links">
+              <a class="word-link" href="${escapeAttr(itemLink(item, 'youglish'))}" target="_blank" rel="noopener">YouGlish</a>
+              <a class="word-link" href="${escapeAttr(itemLink(item, 'cambridge'))}" target="_blank" rel="noopener">Cambridge</a>
+              <a class="word-link" href="${escapeAttr(itemLink(item, 'longman'))}" target="_blank" rel="noopener">Longman</a>
+            </div>
+          </article>
+        `;
+      }).join('');
     }
 
     function escapeHtml(str) {
-      return String(str || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+      return String(str || '').replace(/[&<>\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    }
+    function escapeAttr(str) {
+      return escapeHtml(str).replace(/'/g, '&#39;');
     }
 
     function exportBackup() {
-      const blob = new Blob([JSON.stringify({ app: 'Words', version: 3, exportedAt: new Date().toISOString(), items }, null, 2)], { type: 'application/json' });
+      const blob = new Blob([JSON.stringify({ app: 'Words', version: 4, exportedAt: new Date().toISOString(), items }, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;

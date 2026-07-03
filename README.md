@@ -1,6 +1,14 @@
-# Words PWA
+# Words PWA v4
 
 App simples para salvar vocabulário em inglês.
+
+## Atualizações da v4
+
+- Cards salvos com ícones de favorito, áudio, editar e apagar no topo.
+- Dropdown para tradução.
+- Dropdown para exemplo.
+- Design mais minimalista, com menos ruído visual e ações mais compactas.
+- Mantém os dados salvos da v3 porque usa a mesma chave de armazenamento local.
 
 ## Como publicar no GitHub Pages
 
@@ -13,6 +21,7 @@ App simples para salvar vocabulário em inglês.
    - `icon-512.png`
 3. Faça commit.
 4. Em Settings > Pages, use `main` e `/(root)`.
+5. Abra o app com `?v=4` no final da URL para forçar atualização.
 
 ## Observação
 
