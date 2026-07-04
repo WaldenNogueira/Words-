@@ -1,6 +1,6 @@
 {
-  "name": "Words",
-  "short_name": "Words",
+  "name": "Vocabulary",
+  "short_name": "Vocabulary",
   "description": "A clean vocabulary notebook with GPT prompt flow, IPA, examples, and pronunciation.",
   "start_url": "./index.html",
   "scope": "./",

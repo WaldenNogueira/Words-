@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#ffffff" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <title>Words</title>
+  <title>Vocabulary</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
@@ -244,9 +244,13 @@
     .card-term-line {
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      gap: 8px;
       min-height: 28px;
     }
     .term-toggle {
+      flex: 1 1 auto;
+      min-width: 0;
       width: 100%;
       border: 0;
       background: transparent;
@@ -326,6 +330,7 @@
     .icon-btn:hover { background: var(--soft-2); color: var(--text); }
     .icon-btn svg { width: 19px; height: 19px; stroke: currentColor; }
     .icon-btn.active { color: var(--text); }
+    .card-term-line .expand-btn { flex: 0 0 auto; margin-left: 6px; }
     .expand-btn svg { transition: transform .14s ease; }
     .card.is-expanded .expand-btn svg { transform: rotate(180deg); }
     .icon-btn.danger:hover { color: var(--danger); background: #fdf0ee; }
@@ -484,7 +489,7 @@
 <body>
   <main class="app">
     <header class="topbar">
-      <h1>Words</h1>
+      <h1>Vocabulary</h1>
       <button id="installBtn" class="install-btn">Install</button>
     </header>
 
@@ -706,7 +711,7 @@ Nota em português com dicas práticas, explicações adicionais, alertas de uso
 
       if (navigator.share) {
         try {
-          await navigator.share({ title: `Words: ${term}`, text: promptText });
+          await navigator.share({ title: `Vocabulary: ${term}`, text: promptText });
           toast('Prompt shared. Copy the GPT answer when it is ready.');
           return;
         } catch {
@@ -932,9 +937,9 @@ Nota em português com dicas práticas, explicações adicionais, alertas de uso
               <button class="term-toggle" data-action="toggle" data-id="${escapeAttr(item.id)}" aria-expanded="${isExpanded ? 'true' : 'false'}" title="Open details">
                 <div class="term">${escapeHtml(item.term)}</div>
               </button>
+              <button class="icon-btn expand-btn" data-action="toggle" data-id="${escapeAttr(item.id)}" title="${isExpanded ? 'Collapse details' : 'Expand details'}" aria-label="${isExpanded ? 'Collapse details' : 'Expand details'}" aria-expanded="${isExpanded ? 'true' : 'false'}"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6.5 9 5.5 5.5L17.5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
             <div class="action-line" aria-label="Card actions">
-              <button class="icon-btn expand-btn" data-action="toggle" data-id="${escapeAttr(item.id)}" title="${isExpanded ? 'Collapse details' : 'Expand details'}" aria-label="${isExpanded ? 'Collapse details' : 'Expand details'}" aria-expanded="${isExpanded ? 'true' : 'false'}"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6.5 9 5.5 5.5L17.5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
               <a class="site-btn" href="${escapeAttr(links.youglish)}" target="_blank" rel="noopener" title="YouGlish" aria-label="Open in YouGlish"><span class="wordmark"><span class="you">You</span><span class="glish">Glish</span></span></a>
               <a class="site-btn" href="${escapeAttr(links.reverso)}" target="_blank" rel="noopener" title="Reverso Context" aria-label="Open in Reverso Context"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7.5 8.5A5.7 5.7 0 0 1 17 6.8l1.5 1.5" stroke="#1f6fb2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 4.8v3.5H15" stroke="#1f6fb2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.5 15.5A5.7 5.7 0 0 1 7 17.2l-1.5-1.5" stroke="#d4242c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 19.2v-3.5H9" stroke="#d4242c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
               <button class="icon-btn ${item.favorite ? 'active' : ''}" data-action="favorite" data-id="${escapeAttr(item.id)}" title="Favorite" aria-label="Favorite"><svg viewBox="0 0 24 24" fill="${item.favorite ? 'currentColor' : 'none'}" aria-hidden="true"><path d="m12 3.8 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8L12 3.8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>

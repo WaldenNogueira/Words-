@@ -1,4 +1,4 @@
-# Words PWA v10
+# Vocabulary PWA v11
 
 Updates:
 - Adds an explicit expand/collapse icon in each saved card action row.
