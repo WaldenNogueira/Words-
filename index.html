@@ -66,6 +66,13 @@
       font-weight: 720;
     }
 
+    .app-logo {
+      display: block;
+      width: min(360px, 72vw);
+      height: auto;
+      object-fit: contain;
+    }
+
     .install-btn {
       display: none;
       border: 1px solid var(--line);
@@ -156,10 +163,7 @@
     .btn.primary:hover { background: #111; }
     .btn svg { width: 18px; height: 18px; flex: 0 0 auto; }
     .btn.primary svg { stroke: currentColor; }
-    .gpt-btn {
-      gap: 10px;
-    }
-    .gpt-btn-icon {
+    .btn-icon-img {
       width: 28px;
       height: 28px;
       object-fit: contain;
@@ -268,8 +272,17 @@
       overflow-wrap: anywhere;
     }
 
+    .card-top-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      flex: 0 0 auto;
+    }
+
     .action-line {
-      margin-top: 7px;
+      margin-top: 2px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
       display: flex;
       gap: 6px;
       align-items: center;
@@ -481,6 +494,7 @@
       .btn { padding-inline: 10px; font-size: 14px; }
       .card { padding: 12px; }
       .action-line { margin-left: -3px; }
+      .app-logo { width: min(320px, 78vw); }
       .modal-backdrop { align-items: flex-end; padding: 0; }
       .modal { border-radius: 18px 18px 0 0; max-height: 92vh; }
     }
@@ -489,7 +503,7 @@
 <body>
   <main class="app">
     <header class="topbar">
-      <h1>Vocabulary</h1>
+      <img class="app-logo" src="logo-full.png?v=13" alt="Vocabulary — Walden Nogueira" />
       <button id="installBtn" class="install-btn">Install</button>
     </header>
 
@@ -499,7 +513,7 @@
       </div>
       <input id="manualTerm" class="manual-term" type="text" placeholder="Type a term or expression" autocomplete="off" inputmode="text" />
       <div class="actions">
-        <button id="askGptBtn" class="btn primary gpt-btn"><img class="gpt-btn-icon" src="gpt-icon.png?v=12" alt="" aria-hidden="true" />GPT</button>
+        <button id="askGptBtn" class="btn primary"><img class="btn-icon-img" src="gpt-icon.png?v=13" alt="" aria-hidden="true" />GPT</button>
         <button id="pasteResponseBtn" class="btn"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 4h6l1 2h2a1.5 1.5 0 0 1 1.5 1.5v11A1.5 1.5 0 0 1 18 20H6a1.5 1.5 0 0 1-1.5-1.5v-11A1.5 1.5 0 0 1 6 6h2l1-2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 6h6M8 11h8M8 15h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Paste response</button>
       </div>
       <div id="status" class="status"></div>
@@ -923,11 +937,21 @@ Nota em português com dicas práticas, explicações adicionais, alertas de uso
         ].filter(Boolean).join('');
 
         const isExpanded = expandedIds.has(item.id);
+        const bottomActions = `
+          <div class="action-line" aria-label="Card actions">
+            <a class="site-btn" href="${escapeAttr(links.youglish)}" target="_blank" rel="noopener" title="YouGlish" aria-label="Open in YouGlish"><span class="wordmark"><span class="you">You</span><span class="glish">Glish</span></span></a>
+            <a class="site-btn" href="${escapeAttr(links.reverso)}" target="_blank" rel="noopener" title="Reverso Context" aria-label="Open in Reverso Context"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7.5 8.5A5.7 5.7 0 0 1 17 6.8l1.5 1.5" stroke="#1f6fb2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 4.8v3.5H15" stroke="#1f6fb2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.5 15.5A5.7 5.7 0 0 1 7 17.2l-1.5-1.5" stroke="#d4242c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 19.2v-3.5H9" stroke="#d4242c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <button class="icon-btn ${item.favorite ? 'active' : ''}" data-action="favorite" data-id="${escapeAttr(item.id)}" title="Favorite" aria-label="Favorite"><svg viewBox="0 0 24 24" fill="${item.favorite ? 'currentColor' : 'none'}" aria-hidden="true"><path d="m12 3.8 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8L12 3.8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+            <button class="icon-btn" data-action="edit" data-id="${escapeAttr(item.id)}" title="Edit" aria-label="Edit"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 19.5h4.1L19 9.1a2.1 2.1 0 0 0 0-3l-1.1-1.1a2.1 2.1 0 0 0-3 0L4.5 15.4v4.1Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M13.8 6.2l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+            <button class="icon-btn danger" data-action="delete" data-id="${escapeAttr(item.id)}" title="Delete" aria-label="Delete"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 7h14M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m2 0-.6 12a1.5 1.5 0 0 1-1.5 1.4H9.1A1.5 1.5 0 0 1 7.6 19L7 7m3.2 3.5v6m3.6-6v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        `;
         const expandedContent = isExpanded ? `
           <div class="card-expanded">
             ${item.ipa ? `<div class="ipa">${escapeHtml(item.ipa)}</div>` : ''}
             ${item.translation ? `<div class="translation">${escapeHtml(item.translation)}</div>` : ''}
             ${detailsContent ? `<div class="expanded-title">Definition & examples</div><div class="details-body">${detailsContent}</div>` : ''}
+            ${bottomActions}
           </div>
         ` : '';
 
@@ -937,15 +961,10 @@ Nota em português com dicas práticas, explicações adicionais, alertas de uso
               <button class="term-toggle" data-action="toggle" data-id="${escapeAttr(item.id)}" aria-expanded="${isExpanded ? 'true' : 'false'}" title="Open details">
                 <div class="term">${escapeHtml(item.term)}</div>
               </button>
-              <button class="icon-btn expand-btn" data-action="toggle" data-id="${escapeAttr(item.id)}" title="${isExpanded ? 'Collapse details' : 'Expand details'}" aria-label="${isExpanded ? 'Collapse details' : 'Expand details'}" aria-expanded="${isExpanded ? 'true' : 'false'}"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6.5 9 5.5 5.5L17.5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            </div>
-            <div class="action-line" aria-label="Card actions">
-              <a class="site-btn" href="${escapeAttr(links.youglish)}" target="_blank" rel="noopener" title="YouGlish" aria-label="Open in YouGlish"><span class="wordmark"><span class="you">You</span><span class="glish">Glish</span></span></a>
-              <a class="site-btn" href="${escapeAttr(links.reverso)}" target="_blank" rel="noopener" title="Reverso Context" aria-label="Open in Reverso Context"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7.5 8.5A5.7 5.7 0 0 1 17 6.8l1.5 1.5" stroke="#1f6fb2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 4.8v3.5H15" stroke="#1f6fb2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.5 15.5A5.7 5.7 0 0 1 7 17.2l-1.5-1.5" stroke="#d4242c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 19.2v-3.5H9" stroke="#d4242c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-              <button class="icon-btn ${item.favorite ? 'active' : ''}" data-action="favorite" data-id="${escapeAttr(item.id)}" title="Favorite" aria-label="Favorite"><svg viewBox="0 0 24 24" fill="${item.favorite ? 'currentColor' : 'none'}" aria-hidden="true"><path d="m12 3.8 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8L12 3.8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
-              <button class="icon-btn" data-action="speak" data-id="${escapeAttr(item.id)}" title="Audio" aria-label="Audio"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 9.5v5h3.2L13 18V6L8.2 9.5H5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 9c.8.8 1.2 1.8 1.2 3s-.4 2.2-1.2 3M18.7 6.8A7.2 7.2 0 0 1 21 12a7.2 7.2 0 0 1-2.3 5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-              <button class="icon-btn" data-action="edit" data-id="${escapeAttr(item.id)}" title="Edit" aria-label="Edit"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 19.5h4.1L19 9.1a2.1 2.1 0 0 0 0-3l-1.1-1.1a2.1 2.1 0 0 0-3 0L4.5 15.4v4.1Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M13.8 6.2l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-              <button class="icon-btn danger" data-action="delete" data-id="${escapeAttr(item.id)}" title="Delete" aria-label="Delete"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 7h14M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m2 0-.6 12a1.5 1.5 0 0 1-1.5 1.4H9.1A1.5 1.5 0 0 1 7.6 19L7 7m3.2 3.5v6m3.6-6v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <div class="card-top-actions">
+                <button class="icon-btn" data-action="speak" data-id="${escapeAttr(item.id)}" title="Audio" aria-label="Audio"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 9.5v5h3.2L13 18V6L8.2 9.5H5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 9c.8.8 1.2 1.8 1.2 3s-.4 2.2-1.2 3M18.7 6.8A7.2 7.2 0 0 1 21 12a7.2 7.2 0 0 1-2.3 5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                <button class="icon-btn expand-btn" data-action="toggle" data-id="${escapeAttr(item.id)}" title="${isExpanded ? 'Collapse details' : 'Expand details'}" aria-label="${isExpanded ? 'Collapse details' : 'Expand details'}" aria-expanded="${isExpanded ? 'true' : 'false'}"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6.5 9 5.5 5.5L17.5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              </div>
             </div>
             ${expandedContent}
           </article>
@@ -954,7 +973,7 @@ Nota em português com dicas práticas, explicações adicionais, alertas de uso
     }
 
     function escapeHtml(str) {
-      return String(str || '').replace(/[&<>\"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+      return String(str || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     }
     function escapeAttr(str) { return escapeHtml(str).replace(/'/g, '&#39;'); }
 

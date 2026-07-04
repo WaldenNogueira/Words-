@@ -1,5 +1,5 @@
-const CACHE_NAME = 'vocabulary-pwa-v11.0.0';
-const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './gpt-icon.png'];
+const CACHE_NAME = 'vocabulary-pwa-v13.0.0';
+const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './gpt-icon.png', './logo-full.png'];
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
@@ -16,27 +16,18 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const request = event.request;
   if (request.method !== 'GET') return;
-
   const isNavigation = request.mode === 'navigate' || request.destination === 'document';
-
   if (isNavigation) {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', copy));
-          return response;
-        })
-        .catch(() => caches.match('./index.html'))
-    );
+    event.respondWith(fetch(request).then((response) => {
+      const copy = response.clone();
+      caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', copy));
+      return response;
+    }).catch(() => caches.match('./index.html')));
     return;
   }
-
-  event.respondWith(
-    caches.match(request).then((cached) => cached || fetch(request).then((response) => {
-      const copy = response.clone();
-      caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-      return response;
-    }))
-  );
+  event.respondWith(caches.match(request).then((cached) => cached || fetch(request).then((response) => {
+    const copy = response.clone();
+    caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+    return response;
+  })));
 });
