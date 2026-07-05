@@ -178,6 +178,27 @@
     }
     .status:empty { display: none; }
 
+    .share-followup {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .share-followup[hidden] { display: none; }
+    .mini-btn {
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      background: var(--paper);
+      color: var(--text);
+      padding: 8px 11px;
+      font-size: 12.5px;
+      font-weight: 650;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .mini-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+
     .tools {
       display: flex;
       align-items: center;
@@ -513,10 +534,11 @@
       </div>
       <input id="manualTerm" class="manual-term" type="text" placeholder="Type a term or expression" autocomplete="off" inputmode="text" />
       <div class="actions">
-        <button id="askGptBtn" class="btn primary"><img class="btn-icon-img" src="gpt-icon.png?v=13.1" alt="" aria-hidden="true" />GPT</button>
+        <button id="askGptBtn" class="btn primary"><img class="btn-icon-img" src="gpt-icon.png?v=14" alt="" aria-hidden="true" />GPT</button>
         <button id="pasteResponseBtn" class="btn"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 4h6l1 2h2a1.5 1.5 0 0 1 1.5 1.5v11A1.5 1.5 0 0 1 18 20H6a1.5 1.5 0 0 1-1.5-1.5v-11A1.5 1.5 0 0 1 6 6h2l1-2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 6h6M8 11h8M8 15h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Paste response</button>
       </div>
       <div id="status" class="status"></div>
+      <div id="shareFollowup" class="share-followup" hidden></div>
     </section>
 
     <div class="tools">
@@ -586,6 +608,7 @@ Tradução do exemplo."></textarea></label>
       askGptBtn: $('askGptBtn'),
       pasteResponseBtn: $('pasteResponseBtn'),
       status: $('status'),
+      shareFollowup: $('shareFollowup'),
       search: $('search'),
       list: $('list'),
       count: $('count'),
@@ -707,19 +730,43 @@ NOTE:
 Nota em português com dicas práticas, explicações adicionais, alertas de uso e, quando aplicável, uma seção curta “Passado:” com a forma no passado e uma dica de pronúncia do passado.`;
     }
 
-    async function askGptFromClipboard() {
-      let term = cleanTerm(els.manualTerm.value);
-      if (!term) {
-        try {
-          term = cleanTerm(await readClipboardText());
-        } catch {
-          term = cleanTerm(prompt('Paste or type the English term:') || '');
-        }
-      }
-      if (!term) return toast('Type a term or copy one first.');
+    function chatGptUrl(promptText) {
+      return `https://chatgpt.com/?q=${encodeURIComponent(promptText)}`;
+    }
 
-      const promptText = buildGptPrompt(term);
+    function showChatGptFallback(promptText, term) {
+      if (!els.shareFollowup) return;
+      const url = chatGptUrl(promptText);
+      els.shareFollowup.hidden = false;
+      els.shareFollowup.innerHTML = `
+        <a class="mini-btn primary" href="${escapeAttr(url)}" target="_blank" rel="noopener">Open ChatGPT</a>
+        <button class="mini-btn" type="button" id="copyPromptBtn">Copy prompt</button>
+      `;
+      const copyBtn = document.getElementById('copyPromptBtn');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+          try { await writeClipboardText(promptText); toast('Prompt copied.'); }
+          catch { toast('Copy failed.'); }
+        }, { once: false });
+      }
+    }
+
+    function clearChatGptFallback() {
+      if (!els.shareFollowup) return;
+      els.shareFollowup.hidden = true;
+      els.shareFollowup.innerHTML = '';
+    }
+
+    async function openPromptInChatGpt(promptText, term, options = {}) {
+      const { auto = false } = options;
       try { await writeClipboardText(promptText); } catch {}
+      showChatGptFallback(promptText, term);
+
+      if (auto) {
+        setStatus(`Shared text received: “${term}”. Opening ChatGPT...`);
+        setTimeout(() => { window.location.href = chatGptUrl(promptText); }, 650);
+        return;
+      }
 
       setStatus(`Prompt ready for “${term}”. Paste it in ChatGPT, then copy the answer and come back.`);
 
@@ -734,9 +781,48 @@ Nota em português com dicas práticas, explicações adicionais, alertas de uso
       }
 
       toast('Prompt copied. Opening ChatGPT.');
-      const url = `https://chatgpt.com/?q=${encodeURIComponent(promptText)}`;
-      try { window.open(url, '_blank', 'noopener'); }
+      try { window.open(chatGptUrl(promptText), '_blank', 'noopener'); }
       catch { window.location.href = 'https://chatgpt.com/'; }
+    }
+
+    async function handleIncomingShareTarget() {
+      const params = new URLSearchParams(window.location.search);
+      const hasSharedText = params.has('share') || params.has('text') || params.has('title') || params.has('url');
+      if (!hasSharedText) return;
+
+      const sharedText = [params.get('text'), params.get('title'), params.get('url')]
+        .filter(Boolean)
+        .join(' ')
+        .trim();
+
+      const cleanPath = window.location.pathname + (window.location.hash || '');
+      try { history.replaceState(null, '', cleanPath); } catch {}
+
+      const term = cleanTerm(sharedText);
+      if (!term) {
+        toast('No text received.');
+        return;
+      }
+
+      els.manualTerm.value = term;
+      const promptText = buildGptPrompt(term);
+      await openPromptInChatGpt(promptText, term, { auto: true });
+    }
+
+    async function askGptFromClipboard() {
+      clearChatGptFallback();
+      let term = cleanTerm(els.manualTerm.value);
+      if (!term) {
+        try {
+          term = cleanTerm(await readClipboardText());
+        } catch {
+          term = cleanTerm(prompt('Paste or type the English term:') || '');
+        }
+      }
+      if (!term) return toast('Type a term or copy one first.');
+
+      const promptText = buildGptPrompt(term);
+      await openPromptInChatGpt(promptText, term);
     }
 
     function stripCodeFences(text) {
@@ -981,6 +1067,7 @@ Nota em português com dicas práticas, explicações adicionais, alertas de uso
       els.askGptBtn.addEventListener('click', askGptFromClipboard);
       els.pasteResponseBtn.addEventListener('click', pasteGptResponse);
       els.manualTerm.addEventListener('keydown', (e) => { if (e.key === 'Enter') askGptFromClipboard(); });
+      els.manualTerm.addEventListener('input', clearChatGptFallback);
       els.search.addEventListener('input', render);
       els.list.addEventListener('click', (event) => {
         const btn = event.target.closest('[data-action]');
@@ -1032,6 +1119,7 @@ Nota em português com dicas práticas, explicações adicionais, alertas de uso
     bindEvents();
     loadItems();
     registerServiceWorker();
+    handleIncomingShareTarget();
   </script>
 </body>
 </html>

@@ -1,8 +1,7 @@
-# Vocabulary PWA v13
+# Vocabulary PWA v14
 
-Updates:
-- Closed cards show one line only: term + audio + expand/collapse.
-- YouGlish, Reverso Context, favorite, edit, and delete are shown only at the bottom of expanded cards.
-- Header uses the provided Vocabulary logo.
-- Android app icons use the book/Aa symbol from the provided logo.
-- Cache version updated to v13.
+Adds Android Web Share Target support.
+
+When the installed PWA receives shared text from Android, it fills the manual term field, builds the GPT vocabulary-card prompt, and attempts to open ChatGPT with the prompt.
+
+Fallback buttons appear in the app: Open ChatGPT and Copy prompt.

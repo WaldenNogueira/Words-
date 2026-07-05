@@ -1,5 +1,5 @@
-const CACHE_NAME = 'vocabulary-pwa-v13.0.0';
-const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './gpt-icon.png', './logo-full.png'];
+const CACHE_NAME = 'vocabulary-pwa-v14.0.0';
+const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './gpt-icon.png'];
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
